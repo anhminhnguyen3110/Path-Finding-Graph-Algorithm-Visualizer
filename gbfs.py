@@ -19,10 +19,10 @@ def gbfs(robot: Robot, maze: Maze, instructions: dict):
 			ans = print_path(row, col, path, instructions, (robot.row, robot.col))
 			return ans
 		for ind, instruction in enumerate(instructions):
-			add_row = instructions[instruction][0]
-			add_col = instructions[instruction][1]
-			if(check_valid_move(maze, visited, row + add_row, col + add_col)):
-				queue.put((heuristic(row + add_row, col + add_col, goal) + 1, ind,(row + add_row, col + add_col)))
-				path[row+add_row][col+add_col] = instruction
-				visited[row + add_row][col + add_col] = True
+			new_row = row + instructions[instruction][0]
+			new_col = col + instructions[instruction][1]
+			if(check_valid_move(maze, visited, new_row, new_col)):
+				queue.put((heuristic(new_row, new_col, goal) + 1, ind,(new_row, new_col)))
+				path[new_row][new_col] = instruction
+				visited[new_row][new_col] = True
 	return "No solution found."

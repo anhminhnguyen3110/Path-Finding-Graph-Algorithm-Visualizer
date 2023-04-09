@@ -2,14 +2,14 @@ from common import check_intersecting_node, check_valid_move, find_goal_in_multi
 from maze import Maze
 from robot import Robot
    
-def bfs_for_bidirection( row:int, col:int, visited, queue, path, maze: Maze, instructions: dict):
+def bfs_for_bidirection( row:int, col:int, visited: list, queue: list, path: list, maze: Maze, instructions: dict):
 	for instruction in instructions:
-		add_row = instructions[instruction][0]
-		add_col = instructions[instruction][1]
-		if(check_valid_move(maze, visited, row + add_row, col + add_col)):
-			queue.append((row + add_row, col + add_col))
-			path[row+add_row][col+add_col] = instruction
-			visited[row + add_row][col + add_col] = True
+		new_row = row + instructions[instruction][0]
+		new_col = col + instructions[instruction][1]
+		if(check_valid_move(maze, visited, new_row, new_col)):
+			queue.append((new_row, new_col))
+			path[new_row][new_col] = instruction
+			visited[new_row][new_col] = True
 
 def bidirection(robot: Robot, maze: Maze, instructions_start: dict, instructions_end: dict):
 	rows = len(maze.grid)
