@@ -8,6 +8,13 @@ from robot import Robot
 from queue import PriorityQueue
 
 def execute_search(robot: Robot, maze: Maze, type_of_function: str):
+	# for i in range(len(maze.grid)):
+	# 	for j in range(len(maze.grid[0])):
+	# 		if(i == robot.row and j == robot.col):
+	# 			print("R", end = " ")
+	# 		else:
+	# 			print(maze.grid[i][j], end = " ")
+	# 	print()
 	type_of_function = type_of_function.lower()
 	instructions_bfs = { "up" : (-1, 0), "left" : (0, -1), "down" : (1, 0), "right" : (0, 1) }
 	instructions_dfs = { "right" : (0, 1), "down" : (1, 0), "left" : (0, -1), "up" : (-1, 0) }
