@@ -18,7 +18,7 @@ def astar(robot: Robot, maze: Maze, instructions: dict):
 		f, priority, g, (row, col) = queue.get()
 		# print(f, priority,g, row, col)
 		if(check_found_goals([goal], row, col)):
-			ans = print_path(row, col, path, instructions, robot)
+			ans = print_path(row, col, path, instructions, (robot.row, robot.col))
 			return ans
 		for ind, instruction in enumerate(instructions):
 			add_row = instructions[instruction][0]
@@ -27,4 +27,4 @@ def astar(robot: Robot, maze: Maze, instructions: dict):
 				queue.put((heuristic(row + add_row, col + add_col, goal) + g, ind, g + 1,(row + add_row, col + add_col)))
 				path[row+add_row][col+add_col] = instruction
 				visited[row + add_row][col + add_col] = True
-	return path
+	return "No solution found."

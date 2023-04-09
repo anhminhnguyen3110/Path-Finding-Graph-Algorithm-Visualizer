@@ -14,7 +14,7 @@ def bfs(robot: Robot, maze: Maze, instructions: dict):
 	while(queue):
 		row, col = queue.pop(0)
 		if(check_found_goals(maze.goals, row, col)):
-			ans = print_path(row, col, path, instructions, robot)
+			ans = print_path(row, col, path, instructions, (robot.row, robot.col))
 			return ans
 		for instruction in instructions:
 			add_row = instructions[instruction][0]
@@ -23,4 +23,4 @@ def bfs(robot: Robot, maze: Maze, instructions: dict):
 				queue.append((row + add_row, col + add_col))
 				path[row+add_row][col+add_col] = instruction
 				visited[row + add_row][col + add_col] = True
-	return path
+	return "No solution found."

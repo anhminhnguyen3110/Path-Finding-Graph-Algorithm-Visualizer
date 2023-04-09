@@ -48,7 +48,7 @@ def main():
     method = sys.argv[2]
     read_file_and_create_mize(file_name)
     answer = execute_search(robot, maze, method)
-    print(answer)
+    print(method, ' ', answer)
     print()
 robot = Robot(0,0)
 maze = Maze(0,0)    
