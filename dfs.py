@@ -17,9 +17,9 @@ def dfs(robot: Robot, maze: Maze, instructions: dict):
 			ans = print_path(row, col, path, instructions, (robot.row, robot.col))
 			return ans
 		for instruction in instructions:
-			add_row = instructions[instruction][0]
-			add_col = instructions[instruction][1]
-			if(check_valid_move(maze, visited, row + add_row, col + add_col)):
-				stack.append((row + add_row, col + add_col))
-				path[row+add_row][col+add_col] = instruction
+			new_row = row + instructions[instruction][0]
+			new_col = col + instructions[instruction][1]
+			if(check_valid_move(maze, visited, new_row, new_col)):
+				stack.append((new_row, new_col))
+				path[new_row][new_col] = instruction
 	return "No solution found."
