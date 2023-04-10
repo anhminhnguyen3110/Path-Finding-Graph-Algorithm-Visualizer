@@ -1,11 +1,11 @@
 from astar import astar
 from bfs import bfs
 from bidirection import bidirection
+from bidirection_astar import bidirection_astar
 from dfs import dfs
 from gbfs import gbfs
 from maze import Maze
 from robot import Robot
-from queue import PriorityQueue
 
 def execute_search(robot: Robot, maze: Maze, type_of_function: str):
 	# for i in range(len(maze.grid)):
@@ -35,6 +35,8 @@ def execute_search(robot: Robot, maze: Maze, type_of_function: str):
 		case 'a*':
 			return astar(robot, maze, instructions_astar)
 		case 'cus1':
-			return bidirection(robot, maze, instructions_astar, instructions_bidirection)
+			return bidirection(robot, maze, instructions_bfs, instructions_bidirection)
+		case 'cus2':
+			return bidirection_astar(robot, maze, instructions_astar, instructions_bidirection)
 		case default:
 			return bfs(robot, maze, instructions_bfs)
