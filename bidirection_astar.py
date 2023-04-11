@@ -3,7 +3,9 @@ from maze import Maze
 from robot import Robot
 from queue import PriorityQueue
 
-def process_child_nodes(weight: list, row:int, col:int, queue: PriorityQueue,maze: Maze, visited: list, path: list, instructions: dict(), destination: tuple):
+def process_child_nodes(weight: list, row:int, col:int, queue: PriorityQueue,maze: Maze, visited: list, path: list, instructions: dict(), destination: tuple, draw_package = None):
+	if(draw_package):
+		draw, grid, wait, check_forbid_event = draw_package
 	for ind, instruction in enumerate(instructions):
 		new_row = row + instructions[instruction][0]
 		new_col = col + instructions[instruction][1]
@@ -13,8 +15,12 @@ def process_child_nodes(weight: list, row:int, col:int, queue: PriorityQueue,maz
 			queue.put((f, ind,(new_row, new_col)))
 			path[new_row][new_col] = instruction
 			visited[new_row][new_col] = True
+			if(draw_package and not(grid[new_col][new_row].is_end() or grid[new_col][new_row].is_start())):
+				grid[new_col][new_row].assign_push_inside_queue()
 
-def bidirection_astar(robot: Robot, maze: Maze, instructions_start, instructions_end):
+def bidirection_astar(robot: Robot, maze: Maze, instructions_start, instructions_end, draw_package):
+	if(draw_package):
+		draw, grid, wait, check_forbid_event = draw_package
 	rows = len(maze.grid)
 	cols = len(maze.grid[0])
 	goal = find_goal_in_multiple_goals(maze, robot)
@@ -48,15 +54,27 @@ def bidirection_astar(robot: Robot, maze: Maze, instructions_start, instructions
 			mu = min(mu, weight_start[row_start][col_start] + weight_end[row_start][col_start])
 			intersect_node = (row_start, col_start)
 		
-		process_child_nodes(weight_start, row_start, col_start, queue_start, maze, visited_start, path_start, instructions_start, goal)
+		process_child_nodes(weight_start, row_start, col_start, queue_start, maze, visited_start, path_start, instructions_start, goal, draw_package)
 		
-  
+		if(draw_package):
+			if(not(grid[col_start][row_start].is_end() or grid[col_start][row_start].is_start())):
+				grid[col_start][row_start].assign_pop_outside_queue()
+		if(draw_package):
+			draw()
 		f, priority, (row_end, col_end) = queue_end.get()
 		if visited_start[row_end][col_end] and visited_end[row_end][col_end]:
 			mu = min(mu, weight_start[row_end][col_end] + weight_end[row_end][col_end])
 			intersect_node = (row_end, col_end)
   		
-		process_child_nodes(weight_end, row_end, col_end, queue_end, maze, visited_end, path_end, instructions_end, start)
+		process_child_nodes(weight_end, row_end, col_end, queue_end, maze, visited_end, path_end, instructions_end, start, draw_package)
+		if(draw_package):
+			if(not(grid[col_end][row_end].is_end() or grid[col_end][row_end].is_start())):
+				grid[col_end][row_end].assign_pop_outside_queue()
+		if(draw_package):
+			draw()
+			check_forbid_event()
+			wait()
+   
 		if(queue_end.empty() or queue_start.empty()):
 			break
 		top1, top2 = queue_start.queue[0], queue_end.queue[0]

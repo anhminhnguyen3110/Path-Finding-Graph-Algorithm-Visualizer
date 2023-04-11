@@ -2,10 +2,11 @@ from common import check_found_goals, check_valid_move, print_path
 from maze import Maze
 from robot import Robot
 
-
-def bfs(robot: Robot, maze: Maze, instructions: dict):
+def bfs(robot: Robot, maze: Maze, instructions: dict, draw_package):
 	rows = len(maze.grid)
 	cols = len(maze.grid[0])
+	if(draw_package):
+		draw, grid, wait, check_forbid_event = draw_package
 	visited = [[False for j in range(cols)] for i in range(rows)]
 	path = [["$" for j in range(cols)] for i in range(rows)]
 	queue = []
@@ -28,4 +29,13 @@ def bfs(robot: Robot, maze: Maze, instructions: dict):
 				queue.append((new_row, new_col))
 				path[new_row][new_col] = instruction
 				visited[new_row][new_col] = True
+				if(draw_package and not(grid[new_col][new_row].is_end() or grid[new_col][new_row].is_start())):
+					grid[new_col][new_row].assign_push_inside_queue()
+		if(draw_package):
+			if(not(grid[col][row].is_end() or grid[col][row].is_start())):
+				grid[col][row].assign_pop_outside_queue()
+		if(draw_package):
+			draw()
+			check_forbid_event()
+			wait()
 	return ("No solution found.", 0)
