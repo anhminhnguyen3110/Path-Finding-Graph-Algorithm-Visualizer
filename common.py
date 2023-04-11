@@ -26,16 +26,16 @@ def print_path(row, col, path, instructions, start):
 	ans.reverse()
 	return "; ".join(ans)
 
-def heuristic(row, col, goal) -> int:
-	return abs(row - goal[0]) + abs(col - goal[1])
+def heuristic(start, goal) -> int:
+	return abs(start[0] - goal[0]) + abs(start[1] - goal[1])
 
 def find_goal_in_multiple_goals(maze: Maze, robot: Robot) -> tuple[int, int]:
 	row, col = robot.row, robot.col
 	goals = maze.get_goals()
-	result = heuristic(row, col, maze.goals[0]), maze.goals[0]
+	result = heuristic((row, col), maze.goals[0]), maze.goals[0]
 	for goal in goals:
-		if(heuristic(row, col, goal) < result[0]):
-			result = (heuristic(row, col, goal), goal)
+		if(heuristic((row, col), goal) < result[0]):
+			result = (heuristic((row, col), goal), goal)
 	return result[1]
 
 def check_valid_move_for_bidirectional_search(maze: Maze, row, col) -> bool:
@@ -57,5 +57,25 @@ def print_path_bidirection(intersect_start, intersect_end, path, start, end, ins
 	while(trace != end):
 		ans.append(path[trace[0]][trace[1]][0])
 		parent = (trace[0] - instructions_end[path[trace[0]][trace[1]][0]][0], trace[1] - instructions_end[path[trace[0]][trace[1]][0]][1])
+		trace = parent
+	return "; ".join(ans)
+
+def print_path_bidirection_astar(intersect_node, path_start, path_end, start, end, instructions_start, instructions_end):
+	ans = []
+ 
+	trace = (intersect_node[0], intersect_node[1])
+
+	while(trace != start):
+		ans.append(path_start[trace[0]][trace[1]])
+		parent = (trace[0] - instructions_start[path_start[trace[0]][trace[1]]][0], trace[1] - instructions_start[path_start[trace[0]][trace[1]]][1])
+		trace = parent
+  
+	trace = (intersect_node[0], intersect_node[1])
+
+
+	ans.reverse()
+	while(trace != end):
+		ans.append(path_end[trace[0]][trace[1]])
+		parent = (trace[0] - instructions_end[path_end[trace[0]][trace[1]]][0], trace[1] - instructions_end[path_end[trace[0]][trace[1]]][1])
 		trace = parent
 	return "; ".join(ans)

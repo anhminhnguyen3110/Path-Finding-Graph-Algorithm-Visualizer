@@ -1,4 +1,4 @@
-from common import check_found_goals, check_valid_move, find_goal_in_multiple_goals, print_path
+from common import check_valid_move, find_goal_in_multiple_goals, heuristic, print_path_bidirection_astar
 from maze import Maze
 from robot import Robot
 from queue import PriorityQueue
@@ -65,37 +65,6 @@ def bidirection_astar(robot: Robot, maze: Maze, instructions_start, instructions
 		top1, top2 = queue_start.queue[0], queue_end.queue[0]
 		# print("top1: ",top1[0],", top2: ", top2[0])
 		if max(top1[0], top2[0]) >= mu:
-			ans = print_path_bidirection(intersect_node, path_start, path_end, (robot.row, robot.col), (goal[0], goal[1]), instructions_start, instructions_end)
+			ans = print_path_bidirection_astar(intersect_node, path_start, path_end, (robot.row, robot.col), (goal[0], goal[1]), instructions_start, instructions_end)
 			return ans
 	return "No solution found."
-
-def heuristic(start, goal) -> int:
-	return abs(start[0] - goal[0]) + abs(start[1] - goal[1])
-
-def print_path_bidirection(intersect_node, path_start, path_end, start, end, instructions_start, instructions_end):
-	ans = []
- 
-	trace = (intersect_node[0], intersect_node[1])
-
-	while(trace != start):
-		ans.append(path_start[trace[0]][trace[1]])
-		parent = (trace[0] - instructions_start[path_start[trace[0]][trace[1]]][0], trace[1] - instructions_start[path_start[trace[0]][trace[1]]][1])
-		trace = parent
-  
-	trace = (intersect_node[0], intersect_node[1])
-
-
-	ans.reverse()
-	while(trace != end):
-		ans.append(path_end[trace[0]][trace[1]])
-		parent = (trace[0] - instructions_end[path_end[trace[0]][trace[1]]][0], trace[1] - instructions_end[path_end[trace[0]][trace[1]]][1])
-		trace = parent
-	return "; ".join(ans)
-
-	
-def check_intersecting_node(row_start, col_start, row_end, col_end, visited_start, visited_end):
-	if(visited_start[row_end][col_end]):
-		return (row_end, col_end)
-	elif(visited_end[row_start][col_start]):
-		return (row_start, col_start)
-	return -1

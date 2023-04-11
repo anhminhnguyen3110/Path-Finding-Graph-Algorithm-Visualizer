@@ -14,7 +14,7 @@ def astar(robot: Robot, maze: Maze, instructions: dict):
 	weight = [[0 for j in range(cols)] for i in range(rows)]
 	queue = PriorityQueue()
 	weight[robot.row][robot.col] = 0
-	queue.put((heuristic(robot.row, robot.col, goal), -1, (robot.row, robot.col)))
+	queue.put((heuristic((robot.row, robot.col), goal), -1, (robot.row, robot.col)))
 	visited[robot.row][robot.col] = True
 	while(not queue.empty()):
 		f, priority, (row, col) = queue.get()
@@ -27,7 +27,7 @@ def astar(robot: Robot, maze: Maze, instructions: dict):
 			new_col = col + instructions[instruction][1]
 			if(check_valid_move(maze, visited, new_row, new_col)):
 				weight[new_row][new_col] = weight[row][col] + 1
-				f = heuristic(new_row, new_col, goal) + weight[new_row][new_col]
+				f = heuristic((new_row, new_col), goal) + weight[new_row][new_col]
 				queue.put((f, ind,(new_row, new_col)))
 				path[new_row][new_col] = instruction
 				visited[new_row][new_col] = True

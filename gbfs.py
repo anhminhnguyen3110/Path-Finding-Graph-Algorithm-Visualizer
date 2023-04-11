@@ -11,7 +11,7 @@ def gbfs(robot: Robot, maze: Maze, instructions: dict):
 	path = [["$" for j in range(cols)] for i in range(rows)]
  
 	queue = PriorityQueue()
-	queue.put((heuristic(robot.row, robot.col, goal), -1,(robot.row, robot.col)))
+	queue.put((heuristic((robot.row, robot.col), goal), -1,(robot.row, robot.col)))
 	visited[robot.row][robot.col] = True
 	while(not queue.empty()):
 		f, priority, (row, col) = queue.get()
@@ -23,7 +23,7 @@ def gbfs(robot: Robot, maze: Maze, instructions: dict):
 			new_row = row + instructions[instruction][0]
 			new_col = col + instructions[instruction][1]
 			if(check_valid_move(maze, visited, new_row, new_col)):
-				queue.put((heuristic(new_row, new_col, goal), ind,(new_row, new_col)))
+				queue.put((heuristic((new_row, new_col), goal), ind,(new_row, new_col)))
 				path[new_row][new_col] = instruction
 				visited[new_row][new_col] = True
 	return "No solution found."
