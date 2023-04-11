@@ -38,33 +38,29 @@ def bidirection_astar(robot: Robot, maze: Maze, instructions_start, instructions
 	weight_end[goal[0]][goal[1]] = 0
 	mu = float('inf')
 	intersect_node = -1
+ 
+	if(goal[0] == robot.row and goal[1] == robot.col):
+		return ("", 0)
+
 	while(not queue_start.empty() and not queue_end.empty()):
 		f, priority, (row_start, col_start) = queue_start.get()
-		# print(row_start, col_start)
 		if visited_start[row_start][col_start] and visited_end[row_start][col_start]:
 			mu = min(mu, weight_start[row_start][col_start] + weight_end[row_start][col_start])
 			intersect_node = (row_start, col_start)
-			# print(row_start, col_start, weight_start[row_start][col_start], weight_end[row_start][col_start])
-			# print()
 		
 		process_child_nodes(weight_start, row_start, col_start, queue_start, maze, visited_start, path_start, instructions_start, goal)
 		
   
 		f, priority, (row_end, col_end) = queue_end.get()
-		# print(row_end, col_end)
-		# print()
 		if visited_start[row_end][col_end] and visited_end[row_end][col_end]:
 			mu = min(mu, weight_start[row_end][col_end] + weight_end[row_end][col_end])
 			intersect_node = (row_end, col_end)
-			# print(row_end, col_end, weight_start[row_end][col_end], weight_end[row_end][col_end])
-			# print()
   		
 		process_child_nodes(weight_end, row_end, col_end, queue_end, maze, visited_end, path_end, instructions_end, start)
 		if(queue_end.empty() or queue_start.empty()):
 			break
 		top1, top2 = queue_start.queue[0], queue_end.queue[0]
-		# print("top1: ",top1[0],", top2: ", top2[0])
 		if max(top1[0], top2[0]) >= mu:
 			ans = print_path_bidirection_astar(intersect_node, path_start, path_end, (robot.row, robot.col), (goal[0], goal[1]), instructions_start, instructions_end)
 			return ans
-	return "No solution found."
+	return ("No solution found.", 0)

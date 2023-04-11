@@ -33,6 +33,8 @@ def bidirection(robot: Robot, maze: Maze, instructions_start: dict, instructions
 	path[robot.row][robot.col] = ("start", True)
 	path[goal[0]][goal[1]] = ("end", False)
  
+	if(goal[0] == robot.row and goal[1] == robot.col):
+		return ("", 0)
 	while(queue):
 		row,col,is_begin = queue.pop(0)
 		if(is_begin):
@@ -45,4 +47,4 @@ def bidirection(robot: Robot, maze: Maze, instructions_start: dict, instructions
 			else:
 				ans = print_path_bidirection(intersacting_point[1], intersacting_point[0], path, (robot.row, robot.col), (goal[0], goal[1]), instructions_start, instructions_end)
 			return ans
-	return "No solution found."
+	return ("No solution found.", 0)

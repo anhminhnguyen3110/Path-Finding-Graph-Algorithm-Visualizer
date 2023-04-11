@@ -37,18 +37,15 @@ def read_file_and_create_mize(file_name):
                 if(str[-1] == ")" or str[-1] == "]"):
                     str = str[:-1]
                 block_input.append(int(str))
-                # print(str, end = " ")
-            # print()
             maze.set_maze_block(block_input[0], block_input[1], block_input[2], block_input[3])
     file.close()
-    # maze.__str__()
     return 0
 def main():
     file_name = sys.argv[1]
     method = sys.argv[2]
     read_file_and_create_mize(file_name)
-    answer = execute_search(robot, maze, method)
-    print(file_name, ' ',method, ' ',answer.split('; ').__len__(), answer)
+    (answer, step) = execute_search(robot, maze, method)
+    print(file_name,method,step, answer)
     print()
 robot = Robot(0,0)
 maze = Maze(0,0)    

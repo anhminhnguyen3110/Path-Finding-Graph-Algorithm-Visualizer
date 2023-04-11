@@ -24,7 +24,7 @@ def print_path(row, col, path, instructions, start):
 		parent = (trace[0] - instructions[path[trace[0]][trace[1]]][0], trace[1] - instructions[path[trace[0]][trace[1]]][1])
 		trace = parent
 	ans.reverse()
-	return "; ".join(ans)
+	return ("; ".join(ans), len(ans))
 
 def heuristic(start, goal) -> int:
 	return abs(start[0] - goal[0]) + abs(start[1] - goal[1])
@@ -47,7 +47,6 @@ def check_valid_move_for_bidirectional_search(maze: Maze, row, col) -> bool:
 def print_path_bidirection(intersect_start, intersect_end, path, start, end, instructions_start, instructions_end):
 	ans = []
 	trace = (intersect_start[0], intersect_start[1])
-	# print(path[trace[0]][trace[1]][0])
 	while(trace != start):
 		ans.insert(0, path[trace[0]][trace[1]][0])
 		parent = (trace[0] - instructions_start[path[trace[0]][trace[1]][0]][0], trace[1] - instructions_start[path[trace[0]][trace[1]][0]][1])
@@ -58,7 +57,7 @@ def print_path_bidirection(intersect_start, intersect_end, path, start, end, ins
 		ans.append(path[trace[0]][trace[1]][0])
 		parent = (trace[0] - instructions_end[path[trace[0]][trace[1]][0]][0], trace[1] - instructions_end[path[trace[0]][trace[1]][0]][1])
 		trace = parent
-	return "; ".join(ans)
+	return ("; ".join(ans), len(ans))
 
 def print_path_bidirection_astar(intersect_node, path_start, path_end, start, end, instructions_start, instructions_end):
 	ans = []
@@ -78,4 +77,4 @@ def print_path_bidirection_astar(intersect_node, path_start, path_end, start, en
 		ans.append(path_end[trace[0]][trace[1]])
 		parent = (trace[0] - instructions_end[path_end[trace[0]][trace[1]]][0], trace[1] - instructions_end[path_end[trace[0]][trace[1]]][1])
 		trace = parent
-	return "; ".join(ans)
+	return ("; ".join(ans), len(ans))
