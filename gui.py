@@ -164,6 +164,10 @@ def get_clicked_pos_of_search_buttons(pos, buttons, grid, maze, robot) -> str:
 	return "BFS"
 
 def get_clicked_pos_of_functional_buttons(pos, buttons, grid, maze, robot, draw, wait,check_forbid_event, type_of_function, max_end, ROWS, COLS, start, end):
+	for i in range(grid.__len__()):
+		for j in range(grid[0].__len__()):
+			if(grid[i][j].is_out_queue() or grid[i][j].is_in_queue() or grid[i][j].is_path()):
+				grid[i][j].reset(maze, robot)
 	for button in buttons:
 		if button.is_clicked(pos):
 			if(button.text == 'Start' and type_of_function != '' and start and end.__len__()):
