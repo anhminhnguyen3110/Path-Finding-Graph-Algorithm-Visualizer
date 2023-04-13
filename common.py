@@ -27,7 +27,6 @@ def print_path(row, col, path, instructions, start):
 	return ("; ".join(ans), len(ans))
 
 def heuristic(start, goal) -> int:
-	print(abs(start[0] - goal[0]), abs(start[1] - goal[1]))
 	return abs(start[0] - goal[0]) + abs(start[1] - goal[1])
 
 def find_goal_in_multiple_goals(maze: Maze, robot: Robot) -> tuple[int, int]:
