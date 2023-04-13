@@ -15,14 +15,11 @@ class Maze:
         for i in range(height):
             for j in range(width):
                 self.grid[row+i][col+j] = '#'
-        return 0
-        
         
     def set_size(self, col, row):
         self.col = col
         self.row = row
         self.grid = [['*' for i in range(col)] for j in range(row)]
-        return 0
     
     def get_maze(self, row, col):
         return self.grid[row][col]
@@ -36,4 +33,19 @@ class Maze:
     def set_goal(self, col, row):
         self.grid[row][col] = 'G'
         self.goals.append((row, col))
-        return 0
+        
+    def clear(self):
+        self.grid = [['*' for i in range(self.col)] for j in range(self.row)]
+        self.goals = []
+    
+    def reset_single_node(self, row, col):
+        self.grid[row][col] = '*'
+    
+    def add_goal(self, row, col):
+        self.goals.append((row, col))
+    
+    def remove_goal(self, row, col):
+        self.goals.remove((row, col))
+    
+    def set_block(self, row, col):
+        self.grid[row][col] = '#'
