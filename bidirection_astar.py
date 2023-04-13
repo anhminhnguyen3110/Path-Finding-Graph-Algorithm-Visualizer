@@ -12,7 +12,7 @@ def process_child_nodes(weight: list, row:int, col:int, queue: PriorityQueue,maz
 		if(check_valid_move(maze, visited, new_row, new_col)):
 			weight[new_row][new_col] = weight[row][col] + 1
 			f = heuristic((new_row, new_col), destination) + weight[new_row][new_col]
-			queue.put((f, ind,(new_row, new_col)))
+			queue.put((f, weight[new_row][new_col],(new_row, new_col)))
 			path[new_row][new_col] = instruction
 			visited[new_row][new_col] = True
 			if(draw_package and not(grid[new_col][new_row].is_end() or grid[new_col][new_row].is_start())):
@@ -35,13 +35,14 @@ def bidirection_astar(robot: Robot, maze: Maze, instructions_start, instructions
 	queue_start = PriorityQueue()
 	queue_end = PriorityQueue()
  
-	queue_start.put((heuristic(start, goal), -1, (robot.row, robot.col)))
-	queue_end.put((heuristic(goal, start), -1, (goal[0], goal[1])))
+	weight_start[start[0]][start[1]] = 0
+	weight_end[goal[0]][goal[1]] = 0
+ 
+	queue_start.put((0, weight_start[start[0]][start[1]], (start[0], start[1])))
+	queue_end.put((0, weight_end[goal[0]][goal[1]], (goal[0], goal[1])))
  
 	visited_start[start[0]][start[1]] = True
 	visited_end[goal[0]][goal[1]] = True 
-	weight_start[start[0]][start[1]] = 0
-	weight_end[goal[0]][goal[1]] = 0
 	mu = float('inf')
 	intersect_node = -1
  
@@ -59,6 +60,10 @@ def bidirection_astar(robot: Robot, maze: Maze, instructions_start, instructions
 		if(draw_package):
 			if(not(grid[col_start][row_start].is_end() or grid[col_start][row_start].is_start())):
 				grid[col_start][row_start].assign_pop_outside_queue()
+		if(draw_package):
+			draw()
+			check_forbid_event()
+			wait()
 		if(draw_package):
 			draw()
 		f, priority, (row_end, col_end) = queue_end.get()
