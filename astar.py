@@ -23,7 +23,7 @@ def astar(robot: Robot, maze: Maze, instructions: dict, draw_package):
 		return ("", 0)
 
 	while(not queue.empty()):
-		f, priority, (row, col) = queue.get()
+		f, instruction, (row, col) = queue.get()
 		if(check_found_goals([goal], row, col)):
 			ans = print_path(row, col, path, instructions, (robot.row, robot.col))
 			return ans
