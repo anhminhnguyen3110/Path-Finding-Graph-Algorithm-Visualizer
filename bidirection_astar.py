@@ -49,7 +49,7 @@ def bidirection_astar(robot: Robot, maze: Maze, instructions_start, instructions
 		return ("", 0)
 
 	while(not queue_start.empty() and not queue_end.empty()):
-		f, priority, (row_start, col_start) = queue_start.get()
+		f, instruction, (row_start, col_start) = queue_start.get()
 		if visited_start[row_start][col_start] and visited_end[row_start][col_start]:
 			mu = min(mu, weight_start[row_start][col_start] + weight_end[row_start][col_start])
 			intersect_node = (row_start, col_start)

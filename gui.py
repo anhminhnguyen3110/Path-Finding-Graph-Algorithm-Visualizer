@@ -49,12 +49,18 @@ class Node:
 
 	def is_out_queue(self):
 		return self.color == CYAN
- 
+
+	def is_path(self):
+		return self.color == YELLOW
+	
+	def is_block(self):
+		return self.color == BLACK
+
 	def reset(self, maze: Maze, robot: Robot):
 		maze.reset_single_node(self.row, self.col)
-		if(self.color == GREEN):
+		if(self.is_start()):
 			robot.reset()
-		elif(self.color == RED):
+		elif(self.is_end()):
 			maze.remove_goal(self.row, self.col)
 		self.color = WHITE
   
@@ -152,7 +158,7 @@ def get_clicked_pos_of_search_buttons(pos, buttons, grid, maze, robot) -> str:
 			button.is_selected = True
 			for i in range(grid.__len__()):
 				for j in range(grid[0].__len__()):
-					if(grid[i][j].color == CYAN or grid[i][j].color == LIGHT_GREEN or grid[i][j].color == YELLOW):
+					if(grid[i][j].is_out_queue() or grid[i][j].is_in_queue() or grid[i][j].is_path()):
 						grid[i][j].reset(maze, robot)
 			return button.text
 	return "BFS"
@@ -166,12 +172,12 @@ def get_clicked_pos_of_functional_buttons(pos, buttons, grid, maze, robot, draw,
 			if(button.text == 'Clear Path'):
 				for i in range(grid.__len__()):
 					for j in range(grid[0].__len__()):
-						if(grid[i][j].color == CYAN or grid[i][j].color == LIGHT_GREEN or grid[i][j].color == YELLOW):
+						if(grid[i][j].is_out_queue() or grid[i][j].is_in_queue() or grid[i][j].is_path()):
 							grid[i][j].reset(maze, robot)
 			if(button.text == 'Clear Wall'):
 				for i in range(grid.__len__()):
 					for j in range(grid[0].__len__()):
-						if(grid[i][j].color == BLACK or grid[i][j].color == CYAN or grid[i][j].color == LIGHT_GREEN or grid[i][j].color == YELLOW):
+						if(grid[i][j].is_block() or grid[i][j].is_out_queue() or grid[i][j].is_in_queue() or grid[i][j].is_path()):
 							grid[i][j].reset(maze, robot)
 			if(button.text == 'Increase NoGoal'):
 					if(max_end < 5):
@@ -306,11 +312,11 @@ def main(win, width):
 				if(row < 0 or col < 0 or col >= ROWS or row >= COLS):
 					continue
 				node = grid[row][col]
-				if not start and not node in end:
+				if not start and not node in end and not node.is_block():
 					start = node
 					start.assign_start(robot)
 
-				elif not node in end and node != start and end.__len__() < max_end:
+				elif not node in end and node != start and end.__len__() < max_end and not node.is_block():
 					end.append(node)
 					node.assign_end(maze)
 
@@ -341,7 +347,7 @@ def main(win, width):
 					start_algorithm = True
 					for i in range(grid.__len__()):
 						for j in range(grid[0].__len__()):
-							if(grid[i][j].color == CYAN or grid[i][j].color == LIGHT_GREEN or grid[i][j].color == YELLOW):
+							if(grid[i][j].is_out_queue() or grid[i][j].is_in_queue() or grid[i][j].is_path()):
 								grid[i][j].reset(maze, robot)
 					number_of_steps = algorithm(lambda: draw(win, grid, ROWS,COLS, width, search_buttons, functional_buttons),lambda: wait(wait_variable), lambda: check_forbid_event(), robot, maze, search_method, grid)
 					start_algorithm = False
