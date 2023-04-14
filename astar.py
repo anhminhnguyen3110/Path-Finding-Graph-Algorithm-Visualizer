@@ -1,5 +1,5 @@
 
-from common import check_found_goals, check_valid_move, find_goal_in_multiple_goals, heuristic, print_path
+from common import check_found_goals, check_valid_move, find_goal_in_multiple_goals, heuristic, heuristic_for_multiple_goals, print_path
 from maze import Maze
 from robot import Robot
 from queue import PriorityQueue
@@ -10,21 +10,22 @@ def astar(robot: Robot, maze: Maze, instructions: dict, draw_package):
 		draw, grid, wait, check_forbid_event = draw_package
 	rows = len(maze.grid)
 	cols = len(maze.grid[0])
-	goal = find_goal_in_multiple_goals(maze, robot)
+	# goal = find_goal_in_multiple_goals(maze, robot)
+	# if(goal[0] == robot.row and goal[1] == robot.col):
+	# 	return ("", 0)
 	visited = [[False for j in range(cols)] for i in range(rows)]
 	path = [["$" for j in range(cols)] for i in range(rows)]
 	weight = [[0 for j in range(cols)] for i in range(rows)]
 	queue = PriorityQueue()
 	weight[robot.row][robot.col] = 0
-	queue.put((heuristic((robot.row, robot.col), goal), -1, (robot.row, robot.col)))
 	visited[robot.row][robot.col] = True
+	queue.put((0, 0, (robot.row, robot.col)))
  
-	if(goal[0] == robot.row and goal[1] == robot.col):
-		return ("", 0)
 
 	while(not queue.empty()):
-		f, instruction, (row, col) = queue.get()
-		if(check_found_goals([goal], row, col)):
+		f, weights, (row, col) = queue.get()
+		# print('row: ', row, 'col: ', col, 'f: ', f, 'weight: ', weights)
+		if(check_found_goals(maze.goals, row, col)):
 			ans = print_path(row, col, path, instructions, (robot.row, robot.col))
 			return ans
 		for ind, instruction in enumerate(instructions):
@@ -32,8 +33,8 @@ def astar(robot: Robot, maze: Maze, instructions: dict, draw_package):
 			new_col = col + instructions[instruction][1]
 			if(check_valid_move(maze, visited, new_row, new_col)):
 				weight[new_row][new_col] = weight[row][col] + 1
-				f = heuristic((new_row, new_col), goal) + weight[new_row][new_col]
-				queue.put((f, ind,(new_row, new_col)))
+				f = heuristic_for_multiple_goals((new_row, new_col), maze.goals) + weight[new_row][new_col]
+				queue.put((f, weight[new_row][new_col],(new_row, new_col)))
 				path[new_row][new_col] = instruction
 				visited[new_row][new_col] = True
 				if(draw_package and not(grid[new_col][new_row].is_end() or grid[new_col][new_row].is_start())):

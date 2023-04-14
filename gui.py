@@ -27,7 +27,7 @@ BLACK = (0, 0, 0)
 LIGHT_GREEN = (188,245,188)
 
 class Node:
-	def __init__(self, row, col, width, total_rows):
+	def __init__(self, row, col, width):
 		self.row = row
 		self.col = col
 		self.y = row * width
@@ -108,7 +108,7 @@ def assign_grid(rows,cols, width, maze: Maze):
 	for i in range(cols):
 		grid.append([])
 		for j in range(rows):
-			node = Node(j, i, gap, rows)
+			node = Node(j, i, gap)
 			grid[i].append(node)
 	return grid
 
@@ -150,7 +150,7 @@ def assign_functional_button(search_methods):
  
 	return buttons
 
-def get_clicked_pos_of_search_buttons(pos, buttons, grid, maze, robot) -> str:
+def get_clicked_pos_of_search_buttons(pos, buttons, grid, maze, robot, search_method) -> str:
 	for button in buttons:
 		if button.is_clicked(pos):
 			for i in range(len(buttons)):
@@ -161,7 +161,7 @@ def get_clicked_pos_of_search_buttons(pos, buttons, grid, maze, robot) -> str:
 					if(grid[i][j].is_out_queue() or grid[i][j].is_in_queue() or grid[i][j].is_path()):
 						grid[i][j].reset(maze, robot)
 			return button.text
-	return "BFS"
+	return search_method
 
 def get_clicked_pos_of_functional_buttons(pos, buttons, grid, maze, robot, draw, wait,check_forbid_event, type_of_function, max_end, ROWS, COLS, start, end):
 	for i in range(grid.__len__()):
@@ -304,7 +304,7 @@ def main(win, width):
 				pos = pygame.mouse.get_pos()
 				(x,y) = pos
 				if(x > WIDTH+10 and y < 450 and y > 60):
-					search_method = get_clicked_pos_of_search_buttons(pos, search_buttons, grid, maze, robot)
+					search_method = get_clicked_pos_of_search_buttons(pos, search_buttons, grid, maze, robot, search_method)
 					continue
 				if(x > WIDTH+10 and y > 520 and y < 720):
 					start_algorithm = True
