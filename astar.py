@@ -8,11 +8,12 @@ from queue import PriorityQueue
 def astar(robot: Robot, maze: Maze, instructions: dict, draw_package):
 	if(draw_package):
 		draw, grid, wait, check_forbid_event = draw_package
+	for(goal_row, goal_col) in maze.goals:
+		if(robot.row == goal_row and robot.col == goal_col):
+			return ("", 0)
+
 	rows = len(maze.grid)
 	cols = len(maze.grid[0])
-	# goal = find_goal_in_multiple_goals(maze, robot)
-	# if(goal[0] == robot.row and goal[1] == robot.col):
-	# 	return ("", 0)
 	visited = [[False for j in range(cols)] for i in range(rows)]
 	path = [["$" for j in range(cols)] for i in range(rows)]
 	weight = [[0 for j in range(cols)] for i in range(rows)]
@@ -24,7 +25,6 @@ def astar(robot: Robot, maze: Maze, instructions: dict, draw_package):
 
 	while(not queue.empty()):
 		f, weights, (row, col) = queue.get()
-		# print('row: ', row, 'col: ', col, 'f: ', f, 'weight: ', weights)
 		if(check_found_goals(maze.goals, row, col)):
 			ans = print_path(row, col, path, instructions, (robot.row, robot.col))
 			return ans
