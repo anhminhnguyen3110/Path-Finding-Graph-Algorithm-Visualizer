@@ -32,9 +32,11 @@ def multidirection_search(robot: Robot, maze: Maze, instructions_start: dict, in
 	visited = [[(0, True) for j in range(cols)] for i in range(rows)]
 	path = [["$" for j in range(cols)] for i in range(rows)]
 	queue = []
-
+ 
 	queue.append((robot.row, robot.col, True))
+ 
 	visited[robot.row][robot.col] = (1, True)
+ 
 	path[robot.row][robot.col] = ("start", True)
 	goals = sorted(maze.goals, key = lambda x: (x[0], x[1]))
 	for goal in goals:
@@ -42,6 +44,7 @@ def multidirection_search(robot: Robot, maze: Maze, instructions_start: dict, in
 		queue.append((goal[0], goal[1], False))
 		path[goal[0]][goal[1]] = ("end", False)
  
+
 	while(queue):
 		row,col,is_begin = queue.pop(0)
 		if(is_begin):
