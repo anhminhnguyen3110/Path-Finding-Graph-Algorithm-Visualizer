@@ -1,5 +1,5 @@
 
-from common import check_found_goals, check_valid_move, find_goal_in_multiple_goals, heuristic, heuristic_for_multiple_goals, print_path
+from common import check_found_goals, check_valid_move, heuristic_for_multiple_goals, print_path
 from maze import Maze
 from robot import Robot
 from queue import PriorityQueue

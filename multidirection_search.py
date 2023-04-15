@@ -1,4 +1,4 @@
-from common import check_valid_move_for_multidirectional_search, find_goal_in_multiple_goals, print_path_multidirection
+from common import check_valid_move_for_multidirectional_search, print_path_multidirection
 from maze import Maze
 from robot import Robot
    

@@ -1,4 +1,4 @@
-from common import check_valid_move, find_goal_in_multiple_goals, heuristic, heuristic_for_multiple_goals, print_path_multidirection_astar
+from common import check_valid_move, heuristic, heuristic_for_multiple_goals, print_path_multidirection_astar
 from maze import Maze
 from robot import Robot
 from queue import PriorityQueue
