@@ -4,8 +4,10 @@ from robot import Robot
 
 
 def dfs(robot: Robot, maze: Maze, instructions: dict, draw_package):
+	#gui
 	if(draw_package):
 		draw, grid, wait, check_forbid_event = draw_package
+  
 	for(goal_row, goal_col) in maze.goals:
 		if(robot.row == goal_row and robot.col == goal_col):
 			return ("", 0)
@@ -30,8 +32,11 @@ def dfs(robot: Robot, maze: Maze, instructions: dict, draw_package):
 			if(check_valid_move(maze, visited, new_row, new_col)):
 				stack.append((new_row, new_col))
 				path[new_row][new_col] = instruction
+    
+				#gui
 				if(draw_package and not(grid[new_col][new_row].is_end() or grid[new_col][new_row].is_start())):
 					grid[new_col][new_row].assign_push_inside_queue()
+		#gui
 		if(draw_package):
 			if(not(grid[col][row].is_end() or grid[col][row].is_start())):
 				grid[col][row].assign_pop_outside_queue()
@@ -39,4 +44,5 @@ def dfs(robot: Robot, maze: Maze, instructions: dict, draw_package):
 			draw()
 			check_forbid_event()
 			wait()
+   
 	return ("No solution found.", 0)

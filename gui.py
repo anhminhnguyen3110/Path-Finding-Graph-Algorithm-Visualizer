@@ -252,6 +252,7 @@ def get_clicked_pos_of_grid(y,x, rows, width):
 
 def wait(x):
 	pygame.time.wait(x)
+ 
 def check_wait_time(rows, cols):
 		if(rows == 10 and cols == 10):
 			return WAIT_VARIABLE_FOR_10_x_10
@@ -261,6 +262,7 @@ def check_wait_time(rows, cols):
 			return WAIT_VARIABLE_FOR_30_x_30
 		elif(rows == 40 and cols == 40):
 			return WAIT_VARIABLE_FOR_40_x_40
+
 def check_forbid_event():
 	for event in pygame.event.get():	
 		if event.type == pygame.QUIT:
