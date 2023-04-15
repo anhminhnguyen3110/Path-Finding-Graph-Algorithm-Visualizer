@@ -128,25 +128,25 @@ def draw_grid(win, rows,cols, width):
 			pygame.draw.line(win, GREY, (j * gap + 10, 0 + 10), (j * gap + 10, width + 10))
 
 def assign_search_methods():
-	search_methods = ['BFS', 'DFS', 'GBFS', 'ASTAR', 'Multidirectional Search', 'Multidirectional A*']
+	search_methods = ['BFS', 'DFS', 'GBFS', 'ASTAR', 'Bidirectional Search', 'Bidirectional A Star']
 	buttons = []
 	for i in range(len(search_methods)):
-		buttons.append(Button(search_methods[i], 220, 40, (1000,60 + i * 70), WIN, GREEN))
+		buttons.append(Button(search_methods[i], 200, 40, (1000,60 + i * 70), WIN, GREEN))
 	buttons[0].is_selected = True
 	return buttons
 
 def assign_functional_button(search_methods):
 	functional_button = ['Start', 'Clear Path', 'Clear Wall', 'Increase NoGoal', 'Decrease NoGoal', 'Increase Grid Size', 'Decrease Grid Size']
 	buttons = []
-	buttons.append(Button(functional_button[0], 180, 40, (1000 + (220 - 180)/2,30 + search_methods.__len__() * 70 + 50), WIN, RED))
+	buttons.append(Button(functional_button[0], 200, 40, (1000,60 + search_methods.__len__() * 70 + 50), WIN, RED))
 
-	buttons.append(Button(functional_button[1], 180, 40, (1000 + (220 - 180)/2 - 180 - 10,30 + search_methods.__len__() * 70 + 70 + 50), WIN, RED))
-	buttons.append(Button(functional_button[2], 180, 40, (1000 + (220 - 180)/2,30 + search_methods.__len__() * 70 + 70 + 50), WIN, RED))
-	buttons.append(Button(functional_button[3], 180, 40, (1000 + (220 - 180)/2 + 180 + 10,30 + search_methods.__len__() * 70 + 70 + 50), WIN, RED))
+	buttons.append(Button(functional_button[1], 200, 40, (1000 - 200 - 10,60 + search_methods.__len__() * 70 + 70 + 50), WIN, RED))
+	buttons.append(Button(functional_button[2], 200, 40, (1000,60 + search_methods.__len__() * 70 + 70 + 50), WIN, RED))
+	buttons.append(Button(functional_button[3], 200, 40, (1000 + 200 + 10,60 + search_methods.__len__() * 70 + 70 + 50), WIN, RED))
  
-	buttons.append(Button(functional_button[4], 180, 40, (1000 + (220 - 180)/2 - 180 - 10,30 + (search_methods.__len__() + 1) * 70 + 70 + 50), WIN, RED))
-	buttons.append(Button(functional_button[5], 180, 40, (1000 + (220 - 180)/2,30 + (search_methods.__len__() + 1) * 70 + 70 + 50), WIN, RED))
-	buttons.append(Button(functional_button[6], 180, 40, (1000 + (220 - 180)/2 + 180 + 10,30 + (search_methods.__len__() + 1) * 70 + 70 + 50), WIN, RED))
+	buttons.append(Button(functional_button[4], 200, 40, (1000 - 200 - 10,60 + (search_methods.__len__() + 1) * 70 + 70 + 50), WIN, RED))
+	buttons.append(Button(functional_button[5], 200, 40, (1000,60 + (search_methods.__len__() + 1) * 70 + 70 + 50), WIN, RED))
+	buttons.append(Button(functional_button[6], 200, 40, (1000 + 200 + 10,60 + (search_methods.__len__() + 1) * 70 + 70 + 50), WIN, RED))
  
 	return buttons
 
@@ -184,7 +184,7 @@ def get_clicked_pos_of_functional_buttons(pos, buttons, grid, maze, robot, draw,
 						if(grid[i][j].is_block() or grid[i][j].is_out_queue() or grid[i][j].is_in_queue() or grid[i][j].is_path()):
 							grid[i][j].reset(maze, robot)
 			if(button.text == 'Increase NoGoal'):
-					if(max_end < ROWS * COLS):
+					if(max_end < 5):
 						max_end += 1
 						return (max_end, ROWS, COLS, start, end, grid, 0)
 			if(button.text == 'Decrease NoGoal'):

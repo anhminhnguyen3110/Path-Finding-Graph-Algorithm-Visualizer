@@ -3,20 +3,19 @@ from maze import Maze
 from robot import Robot
 
 def bfs(robot: Robot, maze: Maze, instructions: dict, draw_package):
-	if(draw_package):
-		draw, grid, wait, check_forbid_event = draw_package
-	for(goal_row, goal_col) in maze.goals:
-		if(robot.row == goal_row and robot.col == goal_col):
-			return ("", 0)
-
 	rows = len(maze.grid)
 	cols = len(maze.grid[0])
+	if(draw_package):
+		draw, grid, wait, check_forbid_event = draw_package
 	visited = [[False for j in range(cols)] for i in range(rows)]
 	path = [["$" for j in range(cols)] for i in range(rows)]
 	queue = []
 	queue.append((robot.row, robot.col))
 	visited[robot.row][robot.col] = True
  
+	for(goal_row, goal_col) in maze.goals:
+		if(robot.row == goal_row and robot.col == goal_col):
+			return ("", 0)
 
 	while(queue):
 		row, col = queue.pop(0)

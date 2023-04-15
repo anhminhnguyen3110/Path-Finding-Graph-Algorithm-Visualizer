@@ -19,10 +19,7 @@ def read_file_and_create_mize(file_name):
           
         if(index==1):      
           str = input[1:-1].split(",")
-          if(str[0] == '' or str[1] == ''):
-            robot.set_location(0, 0)
-            continue
-          elif(str[1][-1] == ")" or str[1][-1] == "]"):
+          if(str[1][-1] == ")" or str[1][-1] == "]"):
               str[1] = str[1][:-1]
           robot.set_location(int(str[1]), int(str[0]))
           
@@ -30,8 +27,7 @@ def read_file_and_create_mize(file_name):
             goals_in_string = input[1:-1].split(") | (",)
             for goal_in_string in goals_in_string:
                 goal = goal_in_string.split(",")
-                if(goal[0] == '' or goal[1] == ''): continue
-                elif(goal[1][-1] == ")" or goal[1][-1] == "]"):
+                if(goal[1][-1] == ")" or goal[1][-1] == "]"):
                     goal[1] = goal[1][:-1]
                 maze.set_goal(int(goal[0]), int(goal[1]))
         if(index > 2):

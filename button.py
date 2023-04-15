@@ -37,4 +37,4 @@ class Button:
 			return True
 		return False
 pygame.init()
-gui_font = pygame.font.Font(None,27)
+gui_font = pygame.font.Font(None,30)
