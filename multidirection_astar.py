@@ -5,7 +5,7 @@ from queue import PriorityQueue
 
 def process_child_nodes(is_start: bool, weight: list, row:int, col:int, queue: PriorityQueue,maze: Maze, visited: list, path: list, instructions: dict(), destination, draw_package = None):
 	if(draw_package):
-		draw, grid, wait, check_forbid_event = draw_package
+		_, grid, _, _ = draw_package
 	for ind, instruction in enumerate(instructions):
 		new_row = row + instructions[instruction][0]
 		new_col = col + instructions[instruction][1]
@@ -37,7 +37,7 @@ def multidirection_astar(robot: Robot, maze: Maze, instructions_start, instructi
 	path_end = [["$" for j in range(cols)] for i in range(rows)]
 	weight_start = [[0 for j in range(cols)] for i in range(rows)]
 	weight_end = [[0 for j in range(cols)] for i in range(rows)]
- 
+	epsilon = 1
 	queue_start = PriorityQueue()
 	queue_end = PriorityQueue()
  
@@ -56,13 +56,11 @@ def multidirection_astar(robot: Robot, maze: Maze, instructions_start, instructi
 		visited_end[goal[0]][goal[1]] = True 
  
 	while(not queue_start.empty() and not queue_end.empty()):
-		f, instruction, (row_start, col_start) = queue_start.get()
+		_, _, (row_start, col_start) = queue_start.get()
 		if visited_start[row_start][col_start] and visited_end[row_start][col_start]:
 			mu = min(mu, weight_start[row_start][col_start] + weight_end[row_start][col_start])
-			intersect_node = (row_start, col_start)
-		
+			intersect_node = (row_start, col_start)	
 		process_child_nodes(True, weight_start, row_start, col_start, queue_start, maze, visited_start, path_start, instructions_start, goals, draw_package)
-		
 		if(draw_package):
 			if(not(grid[col_start][row_start].is_end() or grid[col_start][row_start].is_start())):
 				grid[col_start][row_start].assign_pop_outside_queue()
@@ -71,7 +69,7 @@ def multidirection_astar(robot: Robot, maze: Maze, instructions_start, instructi
 			check_forbid_event()
 			wait()
    
-		f, priority, (row_end, col_end) = queue_end.get()
+		_, _, (row_end, col_end) = queue_end.get()
 		if visited_start[row_end][col_end] and visited_end[row_end][col_end]:
 			mu = min(mu, weight_start[row_end][col_end] + weight_end[row_end][col_end])
 			intersect_node = (row_end, col_end)
@@ -87,8 +85,9 @@ def multidirection_astar(robot: Robot, maze: Maze, instructions_start, instructi
 	
 		if(queue_end.empty() or queue_start.empty()):
 			break
+
 		top1, top2 = queue_start.queue[0], queue_end.queue[0]
-		if (top1[0] + top2[0]) > mu:
+		if mu <= max(top1[1], top2[1], weight_start[row_start][col_start] + weight_end[row_end][col_end] + epsilon):
 			ans = print_path_multidirection_astar(intersect_node, path_start, path_end, (robot.row, robot.col), goals, instructions_start, instructions_end)
 			return ans
 	return ("No solution found.", 0)

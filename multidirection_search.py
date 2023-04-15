@@ -4,7 +4,7 @@ from robot import Robot
    
 def process_child_nodes(row: int, col: int, is_begin: bool, visited: list, queue: list, path: list, maze: Maze, instructions: dict, draw_package = None):
 	if(draw_package):
-		draw, grid, wait, check_forbid_event = draw_package
+		_, grid, _, _ = draw_package
 	for instruction in instructions:
 		new_row = row + instructions[instruction][0]
 		new_col = col + instructions[instruction][1]

@@ -9,6 +9,7 @@ class Button:
 		self.is_pressed_color = is_pressed_color
 		self.original_y_pos = pos[1]
 		self.is_selected = False
+  
 		# top rectangle 
 		self.top_rectangle = pygame.Rect(pos,(width,height))
 		self.top_color = (71, 95, 119)
@@ -16,12 +17,12 @@ class Button:
 		# bottom rectangle 
 		self.bottom_rectangle = pygame.Rect(pos,(width,height))
 		self.bottom_color = (53, 75, 94)
+  
 		#text
 		self.text_surf = gui_font.render(text,True,(255, 255, 255))
 		self.text_rect = self.text_surf.get_rect(center = self.top_rectangle.center)
 
 	def draw(self):
-		# elevation logic 
 		self.top_rectangle.y = self.original_y_pos - self.gap
 		self.text_rect.center = self.top_rectangle.center 
 
