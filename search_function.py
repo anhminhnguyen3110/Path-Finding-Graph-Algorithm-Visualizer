@@ -21,8 +21,6 @@ def execute_search(robot: Robot, maze: Maze, type_of_function: str, draw_package
 	instructions_gbfs = { "up" : (-1, 0), "left" : (0, -1), "down" : (1, 0), "right" : (0, 1) }
 	instructions_astar = { "up" : (-1, 0), "left" : (0, -1), "down" : (1, 0), "right" : (0, 1) }
 	instructions_multidirection = { "down" : (-1, 0), "right" : (0, -1), "up" : (1, 0), "left" : (0, 1) }
-	instructions_multidirection_astar = { "up" : (1, 0), "left" : (0, 1), "down" : (-1, 0), "right" : (0, -1) }
- 
 	match type_of_function:
 		case 'dfs':
 			return dfs(robot, maze, instructions_dfs, draw_package)
@@ -43,6 +41,6 @@ def execute_search(robot: Robot, maze: Maze, type_of_function: str, draw_package
 		case 'cus2':
 			return multidirection_astar(robot, maze, instructions_astar, instructions_multidirection, draw_package)
 		case 'multidirectional a*':
-			return multidirection_astar(robot, maze, instructions_astar, instructions_multidirection_astar, draw_package)
+			return multidirection_astar(robot, maze, instructions_astar, instructions_multidirection, draw_package)
 		case default:
 			return bfs(robot, maze, instructions_bfs, draw_package)

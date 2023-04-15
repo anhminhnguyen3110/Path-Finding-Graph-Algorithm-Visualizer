@@ -21,7 +21,7 @@ def gbfs(robot: Robot, maze: Maze, instructions: dict, draw_package):
 	
 
 	while(not queue.empty()):
-		f, instruction_order, (row, col) = queue.get()
+		_, _, (row, col) = queue.get()
 		if(check_found_goals(maze.goals, row, col)):
 			ans = print_path(row, col, path, instructions, (robot.row, robot.col))
 			return ans
