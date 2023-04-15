@@ -4,6 +4,7 @@ from robot import Robot
 from queue import PriorityQueue
 
 def process_child_nodes(is_start: bool, weight: list, row:int, col:int, queue: PriorityQueue,maze: Maze, visited: list, path: list, instructions: dict(), destination, draw_package = None):
+    #gui
 	if(draw_package):
 		_, grid, _, _ = draw_package
 	for ind, instruction in enumerate(instructions):
@@ -18,6 +19,7 @@ def process_child_nodes(is_start: bool, weight: list, row:int, col:int, queue: P
 			queue.put((f, weight[new_row][new_col],(new_row, new_col)))
 			path[new_row][new_col] = instruction
 			visited[new_row][new_col] = True
+			#gui
 			if(draw_package and not(grid[new_col][new_row].is_end() or grid[new_col][new_row].is_start())):
 				grid[new_col][new_row].assign_push_inside_queue()
 
@@ -56,11 +58,14 @@ def multidirection_astar(robot: Robot, maze: Maze, instructions_start, instructi
 		visited_end[goal[0]][goal[1]] = True 
  
 	while(not queue_start.empty() and not queue_end.empty()):
+		#starting from start point
 		_, _, (row_start, col_start) = queue_start.get()
 		if visited_start[row_start][col_start] and visited_end[row_start][col_start]:
 			mu = min(mu, weight_start[row_start][col_start] + weight_end[row_start][col_start])
 			intersect_node = (row_start, col_start)	
 		process_child_nodes(True, weight_start, row_start, col_start, queue_start, maze, visited_start, path_start, instructions_start, goals, draw_package)
+		
+  		#gui
 		if(draw_package):
 			if(not(grid[col_start][row_start].is_end() or grid[col_start][row_start].is_start())):
 				grid[col_start][row_start].assign_pop_outside_queue()
@@ -69,12 +74,14 @@ def multidirection_astar(robot: Robot, maze: Maze, instructions_start, instructi
 			check_forbid_event()
 			wait()
    
+   		#starting from end point
 		_, _, (row_end, col_end) = queue_end.get()
 		if visited_start[row_end][col_end] and visited_end[row_end][col_end]:
 			mu = min(mu, weight_start[row_end][col_end] + weight_end[row_end][col_end])
 			intersect_node = (row_end, col_end)
-		
 		process_child_nodes(False, weight_end, row_end, col_end, queue_end, maze, visited_end, path_end, instructions_end, start, draw_package)
+  
+		#gui
 		if(draw_package):
 			if(not(grid[col_end][row_end].is_end() or grid[col_end][row_end].is_start())):
 				grid[col_end][row_end].assign_pop_outside_queue()
@@ -82,7 +89,8 @@ def multidirection_astar(robot: Robot, maze: Maze, instructions_start, instructi
 			draw()
 			check_forbid_event()
 			wait()
-	
+   
+		#check if two path intersect
 		if(queue_end.empty() or queue_start.empty()):
 			break
 

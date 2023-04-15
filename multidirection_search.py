@@ -3,6 +3,7 @@ from maze import Maze
 from robot import Robot
    
 def process_child_nodes(row: int, col: int, is_begin: bool, visited: list, queue: list, path: list, maze: Maze, instructions: dict, draw_package = None):
+	#gui
 	if(draw_package):
 		_, grid, _, _ = draw_package
 	for instruction in instructions:
@@ -13,15 +14,20 @@ def process_child_nodes(row: int, col: int, is_begin: bool, visited: list, queue
 				queue.append((new_row, new_col, is_begin))
 				path[new_row][new_col] = (instruction, is_begin)
 				visited[new_row][new_col] = (1, is_begin)
+
+				#gui
 				if(draw_package and not(grid[new_col][new_row].is_end() or grid[new_col][new_row].is_start())):
 					grid[new_col][new_row].assign_push_inside_queue()
+     
 			elif(visited[new_row][new_col][0] and visited[new_row][new_col][1] != is_begin):
 				return ((row, col), (new_row, new_col))
 	return -1
 
 def multidirection_search(robot: Robot, maze: Maze, instructions_start: dict, instructions_end: dict, draw_package):
+	#gui
 	if(draw_package):
 		draw, grid, wait, check_forbid_event = draw_package
+  
 	for(goal_row, goal_col) in maze.goals:
 		if(robot.row == goal_row and robot.col == goal_col):
 			return ("", 0)
@@ -48,15 +54,21 @@ def multidirection_search(robot: Robot, maze: Maze, instructions_start: dict, in
 	while(queue):
 		row,col,is_begin = queue.pop(0)
 		if(is_begin):
+			#starting from the start (robot position)
 			intersacting_point = process_child_nodes(row, col, is_begin, visited, queue, path, maze, instructions_start, draw_package)
 		else:
+			#starting from the end (goals position)
 			intersacting_point = process_child_nodes(row, col, is_begin, visited, queue, path, maze, instructions_end, draw_package)
 		if(intersacting_point!=-1):
 			if(is_begin):
+				#check if the intersacting point is coming from the robot search
 				ans = print_path_multidirection(intersacting_point[0], intersacting_point[1], path, (robot.row, robot.col), goals, instructions_start, instructions_end)
 			else:
+				#check if the intersacting point is coming from the goal search
 				ans = print_path_multidirection(intersacting_point[1], intersacting_point[0], path, (robot.row, robot.col), goals, instructions_start, instructions_end)
 			return ans
+
+		#gui
 		if(draw_package):
 			if(not(grid[col][row].is_end() or grid[col][row].is_start())):
 				grid[col][row].assign_pop_outside_queue()
@@ -64,4 +76,5 @@ def multidirection_search(robot: Robot, maze: Maze, instructions_start: dict, in
 			draw()
 			check_forbid_event()
 			wait()
+   
 	return ("No solution found.", 0)
