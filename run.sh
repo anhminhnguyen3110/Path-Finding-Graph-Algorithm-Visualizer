@@ -15,7 +15,7 @@ input_file_13=input_13.txt
 method1=dfs
 method2=bfs
 method3=gbfs
-method4=ASTAR
+method4=AS
 method5=CUS1
 method6=CUS2
 py search.py $input_file $method1
