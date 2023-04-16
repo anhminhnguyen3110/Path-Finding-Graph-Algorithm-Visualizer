@@ -9,7 +9,6 @@ def check_found_goals(goals, row, col) -> bool:
 			return True
 	return False
 
-
 def check_valid_move(maze: Maze, visited, row, col) -> bool:
 	grid = maze.grid
 	rows = len(grid)
@@ -35,14 +34,14 @@ def heuristic_for_multiple_goals(start, goals) -> int:
 		result = min(result, heuristic(start, goal)) 
 	return result
 
-def find_goal_in_multiple_goals(maze: Maze, robot: Robot) -> tuple[int, int]:
-	row, col = robot.row, robot.col
-	goals = maze.get_goals()
-	result = heuristic((row, col), maze.goals[0]), maze.goals[0]
-	for goal in goals:
-		if(heuristic((row, col), goal) < result[0]):
-			result = (heuristic((row, col), goal), goal)
-	return result[1]
+# def find_goal_in_multiple_goals(maze: Maze, robot: Robot) -> tuple[int, int]:
+# 	row, col = robot.row, robot.col
+# 	goals = maze.get_goals()
+# 	result = heuristic((row, col), maze.goals[0]), maze.goals[0]
+# 	for goal in goals:
+# 		if(heuristic((row, col), goal) < result[0]):
+# 			result = (heuristic((row, col), goal), goal)
+# 	return result[1]
 
 def check_valid_move_for_multidirectional_search(maze: Maze, row, col) -> bool:
 	grid = maze.grid
@@ -69,15 +68,12 @@ def print_path_multidirection_astar(intersect_node, path_start, path_end, start,
 	ans = []
  
 	trace = (intersect_node[0], intersect_node[1])
-
 	while(trace != start):
 		ans.append(path_start[trace[0]][trace[1]])
 		parent = (trace[0] - instructions_start[path_start[trace[0]][trace[1]]][0], trace[1] - instructions_start[path_start[trace[0]][trace[1]]][1])
 		trace = parent
   
 	trace = (intersect_node[0], intersect_node[1])
-
-
 	ans.reverse()
 	while(not trace in end):
 		ans.append(path_end[trace[0]][trace[1]])

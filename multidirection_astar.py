@@ -39,7 +39,6 @@ def multidirection_astar(robot: Robot, maze: Maze, instructions_start, instructi
 	path_end = [["$" for j in range(cols)] for i in range(rows)]
 	weight_start = [[0 for j in range(cols)] for i in range(rows)]
 	weight_end = [[0 for j in range(cols)] for i in range(rows)]
-	epsilon = 1
 	queue_start = PriorityQueue()
 	queue_end = PriorityQueue()
  
@@ -48,8 +47,6 @@ def multidirection_astar(robot: Robot, maze: Maze, instructions_start, instructi
 	queue_start.put((0, weight_start[start[0]][start[1]], (start[0], start[1])))
  
 	visited_start[start[0]][start[1]] = True
-	mu = float('inf')
-	intersect_node = -1
 
 	goals = sorted(maze.goals, key = lambda x: (x[0], x[1]))
 	for goal in goals:
@@ -60,9 +57,6 @@ def multidirection_astar(robot: Robot, maze: Maze, instructions_start, instructi
 	while(not queue_start.empty() and not queue_end.empty()):
 		#starting from start point
 		_, _, (row_start, col_start) = queue_start.get()
-		if visited_start[row_start][col_start] and visited_end[row_start][col_start]:
-			mu = min(mu, weight_start[row_start][col_start] + weight_end[row_start][col_start])
-			intersect_node = (row_start, col_start)	
 		process_child_nodes(True, weight_start, row_start, col_start, queue_start, maze, visited_start, path_start, instructions_start, goals, draw_package)
 		
   		#gui
@@ -76,9 +70,6 @@ def multidirection_astar(robot: Robot, maze: Maze, instructions_start, instructi
    
    		#starting from end point
 		_, _, (row_end, col_end) = queue_end.get()
-		if visited_start[row_end][col_end] and visited_end[row_end][col_end]:
-			mu = min(mu, weight_start[row_end][col_end] + weight_end[row_end][col_end])
-			intersect_node = (row_end, col_end)
 		process_child_nodes(False, weight_end, row_end, col_end, queue_end, maze, visited_end, path_end, instructions_end, start, draw_package)
   
 		#gui
@@ -91,11 +82,13 @@ def multidirection_astar(robot: Robot, maze: Maze, instructions_start, instructi
 			wait()
    
 		#check if two path intersect
-		if(queue_end.empty() or queue_start.empty()):
-			break
-
-		top1, top2 = queue_start.queue[0], queue_end.queue[0]
-		if mu <= max(top1[1], top2[1], weight_start[row_start][col_start] + weight_end[row_end][col_end] + epsilon):
-			ans = print_path_multidirection_astar(intersect_node, path_start, path_end, (robot.row, robot.col), goals, instructions_start, instructions_end)
-			return ans
+		if (visited_end[row_start][col_start]) or (visited_start[row_end][col_end]):
+			if(visited_end[row_start][col_start]):
+				intersect_node = (row_start, col_start)
+				ans = print_path_multidirection_astar(intersect_node, path_start, path_end, (robot.row, robot.col), goals, instructions_start, instructions_end)
+				return ans
+			else:
+				intersect_node = (row_end, col_end)
+				ans = print_path_multidirection_astar(intersect_node, path_start, path_end, (robot.row, robot.col), goals, instructions_start, instructions_end)
+				return ans
 	return ("No solution found.", 0)
