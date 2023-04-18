@@ -1,4 +1,6 @@
 """This module contains the GUI for the project."""
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide" # hide welcome prompt from pygame
 import pygame
 from button_container import ButtonContainer
 from constants import DEFAULT_COLS, DEFAULT_ROWS, GUI_FONT, INSTRUCTIONS, WHITE, WIDTH, WIN
@@ -173,6 +175,3 @@ def gui(
                 if event.key == pygame.K_DELETE or event.key == pygame.K_BACKSPACE:
                     maze_gui.clear_all()
     pygame.quit()
-
-
-# gui()

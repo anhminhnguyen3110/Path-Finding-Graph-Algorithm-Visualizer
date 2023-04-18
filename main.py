@@ -63,10 +63,11 @@ def read_file_and_create_mize(file_name) -> None:
 
 def main():
     file_name = sys.argv[1]
-    method = sys.argv[2]
     read_file_and_create_mize(file_name)
-    answer, step = execute_search(robot, maze, method)
-    if maze.row_size < 30 or maze.col_size <= 30:
+    if((maze.row_size > 30 or maze.col_size > 30) and len(sys.argv) <= 2):
+        print("Not enough arguments")
+        return
+    if (maze.row_size <= 30 or maze.col_size <= 30) and len(sys.argv) <= 2:
         gui(
             maze,
             robot,
@@ -74,9 +75,11 @@ def main():
             maze.col_size,
             is_call_independent=False,
             file_name=file_name,
-            search_method=method,
+            search_method="BFS",
         )
     else:
+        method = sys.argv[2]
+        answer, step = execute_search(robot, maze, method)
         print(file_name, method, step)
         print(answer)
     return

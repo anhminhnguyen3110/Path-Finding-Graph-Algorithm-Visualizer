@@ -1,3 +1,5 @@
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide" # hide welcome prompt from pygame
 import pygame
 from constants import WAIT_VARIABLE_FOR_10_X_10, WAIT_VARIABLE_FOR_20_X_20, WAIT_VARIABLE_FOR_30_X_30
 from constants import GREY

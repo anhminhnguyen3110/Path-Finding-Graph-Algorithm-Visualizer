@@ -1,3 +1,5 @@
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide" # hide welcome prompt from pygame
 import pygame
 from constants import BLACK, CYAN, GREEN, LIGHT_GREEN, RED, WHITE, YELLOW
 from maze import Maze

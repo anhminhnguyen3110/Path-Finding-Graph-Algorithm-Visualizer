@@ -1,6 +1,7 @@
 """"Pygame library for creating buttons"""
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide" # hide welcome prompt from pygame
 import pygame
-
 
 class Button:
     def __init__(
