@@ -34,9 +34,7 @@ def process_child_nodes(
             col + instructions[instruction][1],
         )
         # Check if the adjacent square is valid (not visited, not wall, not out of bound)
-        if check_valid_move_for_multidirectional_search(
-            maze, next_square[0], next_square[1]
-        ):
+        if check_valid_move_for_multidirectional_search(maze, next_square[0], next_square[1]):
             # Check if the adjacent square is not visited
             if not visited[next_square[0]][next_square[1]][0]:
                 # Add the adjacent square to the frontier and mark it as visited
@@ -45,15 +43,11 @@ def process_child_nodes(
                 visited[next_square[0]][next_square[1]] = (1, is_start)
                 # Gui
                 if draw_package and not (
-                    grid[next_square[1]][next_square[0]].is_end()
-                    or grid[next_square[1]][next_square[0]].is_start()
+                    grid[next_square[1]][next_square[0]].is_end() or grid[next_square[1]][next_square[0]].is_start()
                 ):
                     grid[next_square[1]][next_square[0]].assign_push_inside_queue()
             # Check if the adjacent square is visited by the other robot (overlapping)
-            elif (
-                visited[next_square[0]][next_square[1]][0]
-                and visited[next_square[0]][next_square[1]][1] != is_start
-            ):
+            elif visited[next_square[0]][next_square[1]][0] and visited[next_square[0]][next_square[1]][1] != is_start:
                 return ((row, col), (next_square[0], next_square[1]))
     return -1
 

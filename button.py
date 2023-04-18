@@ -41,9 +41,7 @@ class Button:
         self.bottom_rectangle.midtop = self.top_rectangle.midtop
         self.bottom_rectangle.height = self.top_rectangle.height + self.gap
 
-        pygame.draw.rect(
-            self.screen, self.bottom_color, self.bottom_rectangle, border_radius=12
-        )
+        pygame.draw.rect(self.screen, self.bottom_color, self.bottom_rectangle, border_radius=12)
         pygame.draw.rect(
             self.screen,
             (self.top_color) if (not self.is_selected) else (self.is_pressed_color),
@@ -56,4 +54,3 @@ class Button:
         if self.top_rectangle.collidepoint(pos):
             return True
         return False
-

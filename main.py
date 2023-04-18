@@ -1,8 +1,12 @@
 # Description: This file is the main file of the project. It reads the input_line file and creates the maze and robot objects.
 import sys
+from gui import gui
 from maze import Maze
 from robot import Robot
 from search_function import execute_search
+
+robot = Robot(0, 0)
+maze = Maze(0, 0)
 
 
 def read_file_and_create_mize(file_name) -> None:
@@ -18,7 +22,7 @@ def read_file_and_create_mize(file_name) -> None:
             strings = input_line[1:-1].split(",")
             if strings[1][-1] == ")" or strings[1][-1] == "]":
                 strings[1] = strings[1][:-1]
-            maze.set_size(int(strings[1]), int(strings[0]))
+            maze.set_size(int(strings[0]), int(strings[1]))
 
         if index == 1:
             strings = input_line[1:-1].split(",")
@@ -62,9 +66,20 @@ def main():
     method = sys.argv[2]
     read_file_and_create_mize(file_name)
     answer, step = execute_search(robot, maze, method)
-    print(file_name, method, step, answer)
+    if maze.row_size < 30 or maze.col_size <= 30:
+        gui(
+            maze,
+            robot,
+            maze.row_size,
+            maze.col_size,
+            is_call_independent=False,
+            file_name=file_name,
+            search_method=method,
+        )
+    else:
+        print(file_name, method, step)
+        print(answer)
+    return
 
 
-robot = Robot(0, 0)
-maze = Maze(0, 0)
 main()

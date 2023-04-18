@@ -12,14 +12,15 @@ class Square:
         self.x = col * width
         self.color = WHITE
         self.width = width
+
     def get_pos(self):
         return self.row, self.col
 
     def is_start(self):
-        return self.color == GREEN
+        return self.color == RED
 
     def is_end(self):
-        return self.color == RED
+        return self.color == GREEN
 
     def is_in_queue(self):
         return self.color == LIGHT_GREEN
@@ -42,11 +43,11 @@ class Square:
         self.color = WHITE
 
     def assign_start(self, robot: Robot):
-        self.color = GREEN
+        self.color = RED
         robot.set_location(self.row, self.col)
 
     def assign_end(self, maze: Maze):
-        self.color = RED
+        self.color = GREEN
         maze.add_goal(self.row, self.col)
 
     def assign_pop_outside_queue(self):
@@ -63,8 +64,7 @@ class Square:
         self.color = YELLOW
 
     def draw(self, win):
-        pygame.draw.rect(
-            win, self.color, (self.x + 10, self.y + 10, self.width, self.width)
-        )
+        pygame.draw.rect(win, self.color, (self.x + 10, self.y + 10, self.width, self.width))
+
     def __str__(self) -> str:
         return "Square is at ({}, {})".format(self.row, self.col)

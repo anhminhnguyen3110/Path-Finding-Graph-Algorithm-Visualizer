@@ -1,5 +1,6 @@
 # Maze class for the grid visualization
 
+
 class Maze:
     def __init__(self, col_size: int, row_size: int):
         self.col_size = col_size
@@ -12,9 +13,12 @@ class Maze:
             for j in range(width):
                 self.grid[row + i][col + j] = "#"
 
-    def set_size(self, col_size: int, row_size: int):
-        self.col_size = col_size
+    def __str__(self) -> str:
+        return str(self.grid)
+
+    def set_size(self, row_size: int, col_size: int):
         self.row_size = row_size
+        self.col_size = col_size
         self.grid = [["*" for i in range(col_size)] for j in range(row_size)]
 
     def get_maze(self, row: int, col: int):

@@ -48,16 +48,13 @@ def process_child_nodes(
             if is_start:
                 # f = g + h (calculate for next square from start position)
                 f_variable = (
-                    heuristic_for_multiple_goals(
-                        (next_square[0], next_square[1]), destination
-                    )
+                    heuristic_for_multiple_goals((next_square[0], next_square[1]), destination)
                     + weight[next_square[0]][next_square[1]]
                 )
             else:
                 # f = g + h (calculate for next square from goals position)
                 f_variable = (
-                    heuristic((next_square[0], next_square[1]), destination)
-                    + weight[next_square[0]][next_square[1]]
+                    heuristic((next_square[0], next_square[1]), destination) + weight[next_square[0]][next_square[1]]
                 )
 
             # Add the adjacent square to the frontier and mark it as visited
@@ -73,8 +70,7 @@ def process_child_nodes(
 
             # Gui
             if draw_package and not (
-                grid[next_square[1]][next_square[0]].is_end()
-                or grid[next_square[1]][next_square[0]].is_start()
+                grid[next_square[1]][next_square[0]].is_end() or grid[next_square[1]][next_square[0]].is_start()
             ):
                 grid[next_square[1]][next_square[0]].assign_push_inside_queue()
 
@@ -108,7 +104,7 @@ def multidirection_astar(
     weight_end = [[0 for j in range(col_length)] for i in range(row_length)]
     queue_start = PriorityQueue()
     queue_end = PriorityQueue()
-    mu = float('inf')
+    mu = float("inf")
     epsilon = 1
     # Add the start position to the start_frontier, mark it as visited, and set its weight to 0
     weight_start[start[0]][start[1]] = 0
@@ -125,7 +121,7 @@ def multidirection_astar(
     while not queue_start.empty() and not queue_end.empty():
         # Search forward
         _, _, (row_start, col_start) = queue_start.get()
-        # if this is not the shortest path then update it as the shortest path 
+        # if this is not the shortest path then update it as the shortest path
         if visited_start[row_start][col_start] and visited_end[row_start][col_start]:
             if visited_start[row_start][col_start] and visited_end[row_start][col_start]:
                 mu = min(mu, weight_start[row_start][col_start] + weight_end[row_start][col_start])
@@ -145,10 +141,7 @@ def multidirection_astar(
         )
         # Gui
         if draw_package:
-            if not (
-                grid[col_start][row_start].is_end()
-                or grid[col_start][row_start].is_start()
-            ):
+            if not (grid[col_start][row_start].is_end() or grid[col_start][row_start].is_start()):
                 grid[col_start][row_start].assign_pop_outside_queue()
         if draw_package:
             draw()
@@ -158,7 +151,7 @@ def multidirection_astar(
         # Search backward
         _, _, (row_end, col_end) = queue_end.get()
         if visited_start[row_end][col_end] and visited_end[row_end][col_end]:
-            # if this is not the shortest path then update it as the shortest path 
+            # if this is not the shortest path then update it as the shortest path
             if visited_start[row_end][col_end] and visited_end[row_end][col_end]:
                 mu = min(mu, weight_start[row_end][col_end] + weight_end[row_end][col_end])
                 intersect_node = (row_end, col_end)
@@ -175,17 +168,23 @@ def multidirection_astar(
             start,  # start point (robot position)
             draw_package,
         )
-        if(queue_end.empty() or queue_start.empty()):
+        if queue_end.empty() or queue_start.empty():
             break
         top1, top2 = queue_start.queue[0], queue_end.queue[0]
         if mu <= max(top1[1], top2[1], weight_start[row_start][col_start] + weight_end[row_end][col_end] + epsilon):
-            ans = print_path_multidirection_astar(intersect_node, path_start, path_end, (robot.row, robot.col), goals, instructions_start, instructions_end)
+            ans = print_path_multidirection_astar(
+                intersect_node,
+                path_start,
+                path_end,
+                (robot.row, robot.col),
+                goals,
+                instructions_start,
+                instructions_end,
+            )
             return ans
         # Gui
         if draw_package:
-            if not (
-                grid[col_end][row_end].is_end() or grid[col_end][row_end].is_start()
-            ):
+            if not (grid[col_end][row_end].is_end() or grid[col_end][row_end].is_start()):
                 grid[col_end][row_end].assign_pop_outside_queue()
         if draw_package:
             draw()

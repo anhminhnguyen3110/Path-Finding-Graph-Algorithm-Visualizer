@@ -61,15 +61,13 @@ def gbfs(
             # Check if the adjacent square is valid (not visited, not wall, not out of bound)
             if check_valid_move(maze, visited, next_square[0], next_square[1]):
                 # Calculate the heuristic of the adjacent square
-                h_value = heuristic_for_multiple_goals(
-                    (next_square[0], next_square[1]), maze.goals
-                )
+                h_value = heuristic_for_multiple_goals((next_square[0], next_square[1]), maze.goals)
 
                 # Add the adjacent square to the frontier and mark it as visited
                 queue.put(
                     (
                         h_value,
-                        ind, # To break ties when h_value is the same, we use the order of the instruction
+                        ind,  # To break ties when h_value is the same, we use the order of the instruction
                         (next_square[0], next_square[1]),
                     )
                 )
@@ -78,8 +76,7 @@ def gbfs(
 
                 # Gui
                 if draw_package and not (
-                    grid[next_square[1]][next_square[0]].is_end()
-                    or grid[next_square[1]][next_square[0]].is_start()
+                    grid[next_square[1]][next_square[0]].is_end() or grid[next_square[1]][next_square[0]].is_start()
                 ):
                     grid[next_square[1]][next_square[0]].assign_push_inside_queue()
 

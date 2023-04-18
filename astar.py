@@ -51,7 +51,7 @@ def astar(
 
         # Found goal here
         if check_found_goals(maze.goals, row, col):
-            return print_path((row, col), path, instructions, (robot.row, robot.col))
+            return print_path(end=(row, col), path=path, instruction=instructions, start=(robot.row, robot.col))
 
         # Check all possible moves from current position to adjacent squares
         for instruction in instructions:
@@ -82,8 +82,7 @@ def astar(
 
                 # Gui
                 if draw_package and not (
-                    grid[next_square[1]][next_square[0]].is_end()
-                    or grid[next_square[1]][next_square[0]].is_start()
+                    grid[next_square[1]][next_square[0]].is_end() or grid[next_square[1]][next_square[0]].is_start()
                 ):
                     grid[next_square[1]][next_square[0]].assign_push_inside_queue()
 

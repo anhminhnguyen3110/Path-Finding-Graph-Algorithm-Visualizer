@@ -61,8 +61,7 @@ def dfs(
 
                 # Gui
                 if draw_package and not (
-                    grid[next_square[1]][next_square[0]].is_end()
-                    or grid[next_square[1]][next_square[0]].is_start()
+                    grid[next_square[1]][next_square[0]].is_end() or grid[next_square[1]][next_square[0]].is_start()
                 ):
                     grid[next_square[1]][next_square[0]].assign_push_inside_queue()
         # Gui

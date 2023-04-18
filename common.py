@@ -5,6 +5,7 @@ from maze import Maze
 
 instructions = {(-1, 0): "up", (0, -1): "left", (1, 0): "down", (0, 1): "right"}
 
+
 # Check if the current position is a goal
 def check_found_goals(goals: list[tuple[int, int]], row: int, col: int) -> bool:
     for goal in goals:
@@ -12,17 +13,14 @@ def check_found_goals(goals: list[tuple[int, int]], row: int, col: int) -> bool:
             return True
     return False
 
+
 # Check if the adjacent square is valid (not visited, not wall, not out of bound)
 def check_valid_move(maze: Maze, visited: list, row: int, col: int) -> bool:
     grid = maze.grid
     rows = len(grid)
     cols = len(grid[0])
-    return (
-        0 <= row < rows
-        and 0 <= col < cols
-        and not visited[row][col]
-        and grid[row][col] != "#"
-    )
+    return 0 <= row < rows and 0 <= col < cols and not visited[row][col] and grid[row][col] != "#"
+
 
 # Print the path from the start to the goal
 def print_path(
@@ -52,9 +50,7 @@ def heuristic(start: tuple[int, int], goal: tuple[int, int]) -> int:
 
 
 # Heuristic function for multiple goals (minimum Manhattan distance)
-def heuristic_for_multiple_goals(
-    start: tuple[int, int], goals: list[tuple[int, int]]
-) -> int:
+def heuristic_for_multiple_goals(start: tuple[int, int], goals: list[tuple[int, int]]) -> int:
     result = float("inf")
     # Find the minimum Manhattan distance from the start to all goals
     for goal in goals:
@@ -63,9 +59,7 @@ def heuristic_for_multiple_goals(
 
 
 # Check if the adjacent square is valid (not wall, not out of bound)
-def check_valid_move_for_multidirectional_search(
-    maze: Maze, row: int, col: int
-) -> bool:
+def check_valid_move_for_multidirectional_search(maze: Maze, row: int, col: int) -> bool:
     grid = maze.grid
     rows = len(grid)
     cols = len(grid[0])
@@ -94,7 +88,7 @@ def print_path_multidirection(
         )
         trace = parent
     trace = (intersect_end[0], intersect_end[1])
-    
+
     # Add the intersect point to the path
     ans.append(
         instructions[
@@ -104,7 +98,7 @@ def print_path_multidirection(
             )
         ]
     )
-    
+
     # Trace back the path from the intersect point to the goal
     while not trace in end:
         ans.append(path[trace[0]][trace[1]])
@@ -141,7 +135,7 @@ def print_path_multidirection_astar(
         trace = parent
 
     trace = (intersect_node[0], intersect_node[1])
-    
+
     # Add the intersect point to the path
     while not trace in end:
         ans.append(path_end[trace[0]][trace[1]])
