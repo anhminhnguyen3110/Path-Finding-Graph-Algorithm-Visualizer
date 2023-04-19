@@ -62,6 +62,9 @@ def read_file_and_create_mize(file_name) -> None:
 
 
 def main():
+    if(len(sys.argv) <= 1):
+        gui(Maze(20, 20), Robot(0, 0), 20, 20, is_call_independent=True)
+        return
     file_name = sys.argv[1]
     read_file_and_create_mize(file_name)
     if((maze.row_size > 30 or maze.col_size > 30) and len(sys.argv) <= 2):

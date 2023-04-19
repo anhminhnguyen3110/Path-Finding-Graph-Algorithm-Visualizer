@@ -100,12 +100,11 @@ def multidirection_astar(
     visited_end = [[False for j in range(col_length)] for i in range(row_length)]
     path_start = [["$" for j in range(col_length)] for i in range(row_length)]
     path_end = [["$" for j in range(col_length)] for i in range(row_length)]
-    weight_start = [[0 for j in range(col_length)] for i in range(row_length)]
-    weight_end = [[0 for j in range(col_length)] for i in range(row_length)]
+    weight_start = [[float("inf") for j in range(col_length)] for i in range(row_length)]
+    weight_end = [[float("inf") for j in range(col_length)] for i in range(row_length)]
     queue_start = PriorityQueue()
     queue_end = PriorityQueue()
     mu = float("inf")
-    epsilon = 1
     # Add the start position to the start_frontier, mark it as visited, and set its weight to 0
     weight_start[start[0]][start[1]] = 0
     visited_start[start[0]][start[1]] = True
@@ -123,9 +122,8 @@ def multidirection_astar(
         _, _, (row_start, col_start) = queue_start.get()
         # if this is not the shortest path then update it as the shortest path
         if visited_start[row_start][col_start] and visited_end[row_start][col_start]:
-            if visited_start[row_start][col_start] and visited_end[row_start][col_start]:
-                mu = min(mu, weight_start[row_start][col_start] + weight_end[row_start][col_start])
-                intersect_node = (row_start, col_start)
+            mu = min(mu, weight_start[row_start][col_start] + weight_end[row_start][col_start])
+            intersect_node = (row_start, col_start)
         process_child_nodes(
             True,  # is_start
             weight_start,  # weight
@@ -150,9 +148,8 @@ def multidirection_astar(
 
         # Search backward
         _, _, (row_end, col_end) = queue_end.get()
+        # if this is not the shortest path then update it as the shortest path
         if visited_start[row_end][col_end] and visited_end[row_end][col_end]:
-            # if this is not the shortest path then update it as the shortest path
-            if visited_start[row_end][col_end] and visited_end[row_end][col_end]:
                 mu = min(mu, weight_start[row_end][col_end] + weight_end[row_end][col_end])
                 intersect_node = (row_end, col_end)
         process_child_nodes(
@@ -171,7 +168,7 @@ def multidirection_astar(
         if queue_end.empty() or queue_start.empty():
             break
         top1, top2 = queue_start.queue[0], queue_end.queue[0]
-        if mu <= max(top1[1], top2[1], weight_start[row_start][col_start] + weight_end[row_end][col_end] + epsilon):
+        if mu <= max(top1[0], top2[0]):
             ans = print_path_multidirection_astar(
                 intersect_node,
                 path_start,

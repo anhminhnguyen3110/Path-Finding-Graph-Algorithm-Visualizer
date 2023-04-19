@@ -165,6 +165,7 @@ class MazeGui:
                     self.grid[j][i].assign_start(self.robot)
                     self.start = self.grid[j][i]
                 elif maze.grid[i][j] == "G":
+                    maze.remove_goal(i, j)
                     self.grid[j][i].assign_end(self.maze)
                     self.end.append(self.grid[j][i])
                     if self.number_of_goals < self.end.__len__():

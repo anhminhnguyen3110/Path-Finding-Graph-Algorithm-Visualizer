@@ -71,6 +71,8 @@ def execute_command(
             maze_gui.increase_grid_size_row_size()
         case "Decrease Row":
             maze_gui.decrease_grid_size_row_size()
+        case "Clear All":
+            maze_gui.clear_all()
         case _:
             return
     return
@@ -86,7 +88,7 @@ def draw(win, maze_gui: MazeGui, button_container: ButtonContainer):
 
 
 def gui(
-    maze: Maze,
+    maze_parameter: Maze,
     robot: Robot,
     row_size: int = DEFAULT_ROWS,
     col_size: int = DEFAULT_COLS,
@@ -106,9 +108,8 @@ def gui(
     # to keep the gui alive
     run = True
     start_algorithm = False
-    wait = 0
     if not is_call_independent:
-        maze_gui.adapt_new_maze(maze, robot)
+        maze_gui.adapt_new_maze(maze_parameter, robot)
 
     textBox.update(str(row_size), str(col_size), str(0))
 
@@ -117,10 +118,6 @@ def gui(
         textBox.update_first_line(str(maze_gui.rows), str(maze_gui.cols))
         textBox.update_second_line(str(maze_gui.number_of_goals))
         maze_gui.check_wait_time()
-        if not wait and not is_call_independent:
-            pygame.time.wait(300)
-            execute_search_gui(lambda: draw(win, maze_gui, button_container), maze_gui, file_name)
-            wait = 1
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False

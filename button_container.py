@@ -39,10 +39,10 @@ class ButtonContainer:
 
     def assign_functional_button(self, search_methods):
         top_buttons = ["Start"]
-        second_buttons = ["Clear Path", "Clear Wall", "Increase Goal"]
-        third_buttons = ["Decrease Goal", "Increase Column", "Decrease Column"]
+        second_buttons = ["Clear Path", "Clear Wall", "Clear All"]
+        third_buttons = [ "Increase Goal", "Decrease Goal", "Increase Column"]
 
-        fourth_buttons = ["Increase Row", "Decrease Row"]
+        fourth_buttons = ["Increase Row", "Decrease Row", "Decrease Column"]
         buttons = []
         buttons.append(
             Button(
