@@ -46,7 +46,7 @@ def astar(
     # Add the start position to the frontier, mark it as visited, and set its cost to 0
     cost[robot.row][robot.col] = 0
     visited[robot.row][robot.col] = True
-    queue.put((0, 0, (robot.row, robot.col)))
+    queue.put((0, number_of_nodes, (robot.row, robot.col)))
 
     while not queue.empty():
         # Current square
@@ -78,7 +78,7 @@ def astar(
                 queue.put(
                     (
                         f_variable,
-                        cost[next_square[0]][next_square[1]],
+                        number_of_nodes,
                         (next_square[0], next_square[1]),
                     )
                 )

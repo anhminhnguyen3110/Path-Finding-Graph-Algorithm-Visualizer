@@ -55,7 +55,7 @@ def gbfs(
             return (ans[0], ans[1], number_of_nodes)
 
         # Check all possible moves from current position to adjacent squares
-        for ind, instruction in enumerate(instructions):
+        for instruction in instructions:
             next_square = (
                 row + instructions[instruction][0],
                 col + instructions[instruction][1],
@@ -71,7 +71,7 @@ def gbfs(
                 queue.put(
                     (
                         h_value,
-                        ind,  # To break ties when h_value is the same, we use the order of the instruction
+                        number_of_nodes,  # To break ties when h_value is the same, we use the order of the instruction
                         (next_square[0], next_square[1]),
                     )
                 )

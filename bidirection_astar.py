@@ -63,7 +63,7 @@ def process_child_nodes(
             queue.put(
                 (
                     f_variable,
-                    cost[next_square[0]][next_square[1]],
+                    number_of_nodes,
                     (next_square[0], next_square[1]),
                 )
             )
@@ -114,14 +114,14 @@ def bidirection_astar(
     # Add the start position to the start_frontier, mark it as visited, and set its cost to 0
     cost_start[start[0]][start[1]] = 0
     visited_start[start[0]][start[1]] = True
-    queue_start.put((0, cost_start[start[0]][start[1]], (start[0], start[1])))
+    queue_start.put((0, number_of_nodes, (start[0], start[1])))
 
     # Add the goals position to the end_frontier, mark them as visited, and set their cost to 0
     goals = sorted(maze.goals, key=lambda x: (x[0], x[1]))
     for goal in goals:
         cost_end[goal[0]][goal[1]] = 0
         number_of_nodes += 1
-        queue_end.put((0, cost_end[goal[0]][goal[1]], (goal[0], goal[1])))
+        queue_end.put((0, number_of_nodes, (goal[0], goal[1])))
         visited_end[goal[0]][goal[1]] = True
 
     while not queue_start.empty() and not queue_end.empty():
@@ -129,9 +129,11 @@ def bidirection_astar(
         _, _, (row_start, col_start) = queue_start.get()
         # if this is not the shortest path then update it as the shortest path
         if visited_start[row_start][col_start] and visited_end[row_start][col_start]:
-            mu = min(mu, cost_start[row_start][col_start] + cost_end[row_start][col_start])
-            intersect_node = (row_start, col_start)
-        process_child_nodes(
+            if(mu > cost_start[row_start][col_start] + cost_end[row_start][col_start]):
+                mu = cost_start[row_start][col_start] + cost_end[row_start][col_start]
+                intersect_node = (row_start, col_start)
+                
+        number_of_nodes = process_child_nodes(
             True,  # is_start
             cost_start,  # cost
             row_start,  # row from start point
@@ -158,8 +160,10 @@ def bidirection_astar(
         _, _, (row_end, col_end) = queue_end.get()
         # if this is not the shortest path then update it as the shortest path
         if visited_start[row_end][col_end] and visited_end[row_end][col_end]:
-                mu = min(mu, cost_start[row_end][col_end] + cost_end[row_end][col_end])
+            if(mu > cost_start[row_end][col_end] + cost_end[row_end][col_end]):
+                mu = cost_start[row_end][col_end] + cost_end[row_end][col_end]
                 intersect_node = (row_end, col_end)
+                
         number_of_nodes = process_child_nodes(
             False,  # is_start
             cost_end,  # cost
@@ -174,8 +178,18 @@ def bidirection_astar(
             number_of_nodes, # number of nodes
             draw_package,
         )
+        # Gui
+        if draw_package:
+            if not (grid[col_end][row_end].is_end() or grid[col_end][row_end].is_start()):
+                grid[col_end][row_end].assign_pop_outside_queue()
+        if draw_package:
+            draw()
+            check_forbid_event()
+            wait()
+            
         if queue_end.empty() or queue_start.empty():
             break
+        
         top1, top2 = queue_start.queue[0], queue_end.queue[0]
         if mu <= max(top1[0], top2[0]):
             ans = print_path_bidirection_astar(
@@ -188,13 +202,5 @@ def bidirection_astar(
                 instructions_end,
             )
             return (ans[0], ans[1], number_of_nodes)
-        # Gui
-        if draw_package:
-            if not (grid[col_end][row_end].is_end() or grid[col_end][row_end].is_start()):
-                grid[col_end][row_end].assign_pop_outside_queue()
-        if draw_package:
-            draw()
-            check_forbid_event()
-            wait()
 
     return ("No solution found.", 0, number_of_nodes)
