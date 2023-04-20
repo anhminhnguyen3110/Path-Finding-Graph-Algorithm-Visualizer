@@ -11,7 +11,7 @@ from common import (
     check_valid_move,
     heuristic,
     heuristic_for_multiple_goals,
-    print_path_multidirection_astar,
+    print_path_bidirection_astar,
 )
 from maze import Maze
 from robot import Robot
@@ -75,8 +75,8 @@ def process_child_nodes(
                 grid[next_square[1]][next_square[0]].assign_push_inside_queue()
 
 
-# Multidirectional A* strategy
-def multidirection_astar(
+# Bidirectional A* strategy
+def bidirection_astar(
     robot: Robot,
     maze: Maze,
     instructions_start: dict[str, tuple[int, int]],
@@ -169,7 +169,7 @@ def multidirection_astar(
             break
         top1, top2 = queue_start.queue[0], queue_end.queue[0]
         if mu <= max(top1[0], top2[0]):
-            ans = print_path_multidirection_astar(
+            ans = print_path_bidirection_astar(
                 intersect_node,
                 path_start,
                 path_end,

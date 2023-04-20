@@ -14,8 +14,8 @@ class ButtonContainer:
             "DFS",
             "GBFS",
             "ASTAR",
-            "Multidirectional Search",
-            "Multidirectional A*",
+            "Bidirectional Search",
+            "Bidirectional A*",
         ]
         buttons = []
         for i, search_method in enumerate(search_methods):
@@ -26,9 +26,9 @@ class ButtonContainer:
     def turn_on_a_search_button(self, search_method: str):
         search_method = search_method.lower()
         if search_method == "cus1":
-            search_method = "multidirectional search"
+            search_method = "bidirectional search"
         elif search_method == "cus2":
-            search_method = "multidirectional a*"
+            search_method = "bidirectional a*"
         elif search_method == "as":
             search_method = "astar"
         for button in self.search_buttons:

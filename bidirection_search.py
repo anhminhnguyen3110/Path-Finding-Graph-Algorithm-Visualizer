@@ -5,8 +5,8 @@ Module common function for check if the robot founds all goals of check if
 - print the path after searching.
 """
 from common import (
-    check_valid_move_for_multidirectional_search,
-    print_path_multidirection,
+    check_valid_move_for_bidirectional_search,
+    print_path_bidirection,
 )
 from maze import Maze
 from robot import Robot
@@ -34,7 +34,7 @@ def process_child_nodes(
             col + instructions[instruction][1],
         )
         # Check if the adjacent square is valid (not visited, not wall, not out of bound)
-        if check_valid_move_for_multidirectional_search(maze, next_square[0], next_square[1]):
+        if check_valid_move_for_bidirectional_search(maze, next_square[0], next_square[1]):
             # Check if the adjacent square is not visited
             if not visited[next_square[0]][next_square[1]][0]:
                 # Add the adjacent square to the frontier and mark it as visited
@@ -52,8 +52,8 @@ def process_child_nodes(
     return -1
 
 
-# Multidirectional search strategy
-def multidirection_search(
+# Bidirectional search strategy
+def bidirection_search(
     robot: Robot,
     maze: Maze,
     instructions_start: dict,
@@ -130,7 +130,7 @@ def multidirection_search(
         if intersacting_point != -1:
             if is_start:
                 # Check if the intersacting point is coming from the start point
-                return print_path_multidirection(
+                return print_path_bidirection(
                     intersacting_point[0],  # start point
                     intersacting_point[1],  # end point
                     path,  # path
@@ -141,7 +141,7 @@ def multidirection_search(
                 )
             else:
                 # Check if the intersacting point is coming from the end point
-                return print_path_multidirection(
+                return print_path_bidirection(
                     intersacting_point[1],  # end point
                     intersacting_point[0],  # start point
                     path,  # path

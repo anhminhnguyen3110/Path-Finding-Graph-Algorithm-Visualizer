@@ -59,7 +59,7 @@ def heuristic_for_multiple_goals(start: tuple[int, int], goals: list[tuple[int, 
 
 
 # Check if the adjacent square is valid (not wall, not out of bound)
-def check_valid_move_for_multidirectional_search(maze: Maze, row: int, col: int) -> bool:
+def check_valid_move_for_bidirectional_search(maze: Maze, row: int, col: int) -> bool:
     grid = maze.grid
     rows = len(grid)
     cols = len(grid[0])
@@ -67,7 +67,7 @@ def check_valid_move_for_multidirectional_search(maze: Maze, row: int, col: int)
 
 
 # Print the path from the start to the intersect point and from the intersect point to the goal
-def print_path_multidirection(
+def print_path_bidirection(
     intersect_start: tuple[int, int],
     intersect_end: tuple[int, int],
     path: list,
@@ -112,7 +112,7 @@ def print_path_multidirection(
 
 
 # Print the path from the start to the intersect point and from the intersect point to the goal
-def print_path_multidirection_astar(
+def print_path_bidirection_astar(
     intersect_node: tuple[int, int],
     path_start: list,
     path_end: list,
