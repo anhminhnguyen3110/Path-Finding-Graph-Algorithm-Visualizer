@@ -82,8 +82,8 @@ def main():
         )
     else:
         method = sys.argv[2]
-        answer, step = execute_search(robot, maze, method)
-        print(file_name, method, step)
+        answer,steps, number_of_nodes = execute_search(robot, maze, method)
+        print(file_name, method, number_of_nodes)
         print(answer)
     return
 

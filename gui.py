@@ -26,10 +26,10 @@ def execute_search_gui(draw_func, maze_gui: MazeGui, file_name: str = ""):
                 pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
 
     # execute search
-    (ans, number_of_steps) = execute_search(
+    (ans, number_of_steps, number_of_nodes) = execute_search(
         maze_gui.robot, maze_gui.maze, maze_gui.search_method, (draw_func, maze_gui.grid, wait, check_forbid_event)
     )
-    print(file_name, maze_gui.search_method, number_of_steps)
+    print(file_name, maze_gui.search_method, number_of_nodes)
     print(ans)
     # print path
     instruction_list = ans.split("; ")
@@ -167,7 +167,7 @@ def gui(
                     start_algorithm = True
                     maze_gui.clear_path()
                     if maze_gui.start and len(maze_gui.end):
-                        execute_search_gui(lambda: draw(win, maze_gui, button_container), maze_gui)
+                        execute_search_gui(lambda: draw(win, maze_gui, button_container), maze_gui, file_name)
                     start_algorithm = False
                 if event.key == pygame.K_DELETE or event.key == pygame.K_BACKSPACE:
                     maze_gui.clear_all()

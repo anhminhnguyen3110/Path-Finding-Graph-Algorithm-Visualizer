@@ -15,15 +15,17 @@ def bfs(
     maze: Maze,
     instructions: dict[str, tuple[int, int]],
     draw_package: tuple = None,
-) -> tuple[str, int]:
+) -> tuple[str, int, int]:
     # Gui
     if draw_package:
         draw, grid, wait, check_forbid_event = draw_package
-
+    # number of nodes
+    number_of_nodes = 1
+    
     # Check if the robot is already at the goal
     for goal_row, goal_col in maze.goals:
         if robot.row == goal_row and robot.col == goal_col:
-            return ("", 0)
+            return ("", 0, number_of_nodes)
 
     # Initialize the frontier, visited, path
     row_length = len(maze.grid)
@@ -42,8 +44,8 @@ def bfs(
 
         # Found goal here
         if check_found_goals(maze.goals, row, col):
-            return print_path(end=(row, col), path=path, instruction=instructions, start=(robot.row, robot.col))
-
+            ans = print_path(end=(row, col), path=path, instruction=instructions, start=(robot.row, robot.col))
+            return (ans[0], ans[1], number_of_nodes)
         # Check all possible moves from current position to adjacent squares
         for instruction in instructions:
             next_square = (
@@ -54,6 +56,7 @@ def bfs(
             # Check if the adjacent square is valid (not visited, not wall, not out of bound)
             if check_valid_move(maze, visited, next_square[0], next_square[1]):
                 # Add the adjacent square to the frontier and mark it as visited
+                number_of_nodes += 1
                 queue.append((next_square[0], next_square[1]))
                 path[next_square[0]][next_square[1]] = instruction
                 visited[next_square[0]][next_square[1]] = True
@@ -71,4 +74,4 @@ def bfs(
             check_forbid_event()
             wait()
 
-    return ("No solution found.", 0)
+    return ("No solution found.", 0, number_of_nodes)
