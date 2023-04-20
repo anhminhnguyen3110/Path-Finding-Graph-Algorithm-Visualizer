@@ -104,7 +104,6 @@ def bidirection_astar(
     weight_end = [[float("inf") for j in range(col_length)] for i in range(row_length)]
     queue_start = PriorityQueue()
     queue_end = PriorityQueue()
-    mu = float("inf")
     # Add the start position to the start_frontier, mark it as visited, and set its weight to 0
     weight_start[start[0]][start[1]] = 0
     visited_start[start[0]][start[1]] = True
@@ -121,9 +120,6 @@ def bidirection_astar(
         # Search forward
         _, _, (row_start, col_start) = queue_start.get()
         # if this is not the shortest path then update it as the shortest path
-        if visited_start[row_start][col_start] and visited_end[row_start][col_start]:
-            mu = min(mu, weight_start[row_start][col_start] + weight_end[row_start][col_start])
-            intersect_node = (row_start, col_start)
         process_child_nodes(
             True,  # is_start
             weight_start,  # weight
@@ -149,9 +145,6 @@ def bidirection_astar(
         # Search backward
         _, _, (row_end, col_end) = queue_end.get()
         # if this is not the shortest path then update it as the shortest path
-        if visited_start[row_end][col_end] and visited_end[row_end][col_end]:
-                mu = min(mu, weight_start[row_end][col_end] + weight_end[row_end][col_end])
-                intersect_node = (row_end, col_end)
         process_child_nodes(
             False,  # is_start
             weight_end,  # weight
@@ -165,20 +158,15 @@ def bidirection_astar(
             start,  # start point (robot position)
             draw_package,
         )
-        if queue_end.empty() or queue_start.empty():
-            break
-        top1, top2 = queue_start.queue[0], queue_end.queue[0]
-        if mu <= max(top1[0], top2[0]):
-            ans = print_path_bidirection_astar(
-                intersect_node,
-                path_start,
-                path_end,
-                (robot.row, robot.col),
-                goals,
-                instructions_start,
-                instructions_end,
-            )
-            return ans
+        if (visited_end[row_start][col_start]) or (visited_start[row_end][col_end]):
+            if(visited_end[row_start][col_start]):
+                intersect_node = (row_start, col_start)
+                ans = print_path_bidirection_astar(intersect_node, path_start, path_end, (robot.row, robot.col), goals, instructions_start, instructions_end)
+                return ans
+            else:
+                intersect_node = (row_end, col_end)
+                ans = print_path_bidirection_astar(intersect_node, path_start, path_end, (robot.row, robot.col), goals, instructions_start, instructions_end)
+                return ans
         # Gui
         if draw_package:
             if not (grid[col_end][row_end].is_end() or grid[col_end][row_end].is_start()):
