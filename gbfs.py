@@ -27,10 +27,12 @@ def gbfs(
     if draw_package:
         draw, grid, wait, check_forbid_event = draw_package
 
-        # Check if the robot is already at the goal
+    # number of nodes
+    number_of_nodes = 1
+    # Check if the robot is already at the goal
     for goal_row, goal_col in maze.goals:
         if robot.row == goal_row and robot.col == goal_col:
-            return ("", 0)
+            return ("", 0, number_of_nodes)
 
         # Initialize the frontier, visited, path
     row_length = len(maze.grid)
@@ -49,7 +51,8 @@ def gbfs(
 
         # Found goal here
         if check_found_goals(maze.goals, row, col):
-            return print_path((row, col), path, instructions, (robot.row, robot.col))
+            ans = print_path((row, col), path, instructions, (robot.row, robot.col))
+            return (ans[0], ans[1], number_of_nodes)
 
         # Check all possible moves from current position to adjacent squares
         for ind, instruction in enumerate(instructions):
@@ -63,6 +66,7 @@ def gbfs(
                 # Calculate the heuristic of the adjacent square
                 h_value = heuristic_for_multiple_goals((next_square[0], next_square[1]), maze.goals)
 
+                number_of_nodes += 1
                 # Add the adjacent square to the frontier and mark it as visited
                 queue.put(
                     (
@@ -88,4 +92,4 @@ def gbfs(
             draw()
             check_forbid_event()
             wait()
-    return ("No solution found.", 0)
+    return ("No solution found.", 0, number_of_nodes)

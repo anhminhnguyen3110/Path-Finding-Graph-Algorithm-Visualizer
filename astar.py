@@ -22,26 +22,29 @@ def astar(
     maze: Maze,
     instructions: dict[str, tuple[int, int]],
     draw_package: tuple = None,
-) -> tuple[str, int]:
+) -> tuple[str, int, int]:
     # Gui
     if draw_package:
         draw, grid, wait, check_forbid_event = draw_package
 
+    # number of nodes
+    number_of_nodes = 1
+    
     # Check if the robot is already at the goal
     for goal_row, goal_col in maze.goals:
         if robot.row == goal_row and robot.col == goal_col:
-            return ("", 0)
+            return ("", 0, number_of_nodes)
 
-    # Initialize the frontier, visited, path, weight
+    # Initialize the frontier, visited, path, cost
     row_length = len(maze.grid)
     col_length = len(maze.grid[0])
     visited = [[False for j in range(col_length)] for i in range(row_length)]
     path = [["$" for j in range(col_length)] for i in range(row_length)]
-    weight = [[0 for j in range(col_length)] for i in range(row_length)]
+    cost = [[0 for j in range(col_length)] for i in range(row_length)]
     queue = PriorityQueue()
 
-    # Add the start position to the frontier, mark it as visited, and set its weight to 0
-    weight[robot.row][robot.col] = 0
+    # Add the start position to the frontier, mark it as visited, and set its cost to 0
+    cost[robot.row][robot.col] = 0
     visited[robot.row][robot.col] = True
     queue.put((0, 0, (robot.row, robot.col)))
 
@@ -51,7 +54,8 @@ def astar(
 
         # Found goal here
         if check_found_goals(maze.goals, row, col):
-            return print_path(end=(row, col), path=path, instruction=instructions, start=(robot.row, robot.col))
+            ans = print_path(end=(row, col), path=path, instruction=instructions, start=(robot.row, robot.col))
+            return (ans[0], ans[1], number_of_nodes)
 
         # Check all possible moves from current position to adjacent squares
         for instruction in instructions:
@@ -62,18 +66,19 @@ def astar(
 
             # Check if the adjacent square is valid (not visited, not wall, not out of bound)
             if check_valid_move(maze, visited, next_square[0], next_square[1]):
-                # Calculate the g_variable(weight) and f_variable of the adjacent square
-                weight[next_square[0]][next_square[1]] = weight[row][col] + 1
+                # Calculate the g_variable(cost) and f_variable of the adjacent square
+                cost[next_square[0]][next_square[1]] = cost[row][col] + 1
                 f_variable = (
                     heuristic_for_multiple_goals((next_square[0], next_square[1]), maze.goals)
-                    + weight[next_square[0]][next_square[1]]
+                    + cost[next_square[0]][next_square[1]]
                 )
 
                 # Add the adjacent square to the frontier and mark it as visited
+                number_of_nodes += 1
                 queue.put(
                     (
                         f_variable,
-                        weight[next_square[0]][next_square[1]],
+                        cost[next_square[0]][next_square[1]],
                         (next_square[0], next_square[1]),
                     )
                 )
@@ -94,4 +99,4 @@ def astar(
             check_forbid_event()
             wait()
 
-    return ("No solution found.", 0)
+    return ("No solution found.", 0, number_of_nodes)

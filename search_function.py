@@ -11,7 +11,7 @@ from maze import Maze
 from robot import Robot
 
 
-def execute_search(robot: Robot, maze: Maze, type_of_function: str, draw_package: tuple = None) -> tuple[str, int]:                         
+def execute_search(robot: Robot, maze: Maze, type_of_function: str, draw_package: tuple = None) -> tuple[str, int, int]:                         
     type_of_function = type_of_function.lower()
     instructions_bfs = {"up": (-1, 0), "left": (0, -1), "down": (1, 0), "right": (0, 1)}
     instructions_dfs = {"right": (0, 1), "down": (1, 0), "left": (0, -1), "up": (-1, 0)}

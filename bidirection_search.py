@@ -21,8 +21,9 @@ def process_child_nodes(
     path: list,
     maze: Maze,
     instructions: dict[str, tuple[int, int]],
+    number_of_nodes: int,
     draw_package: tuple = None,
-) -> tuple[tuple[int, int], tuple[int, int]]:
+):
     # Gui
     if draw_package:
         _, grid, _, _ = draw_package
@@ -38,6 +39,7 @@ def process_child_nodes(
             # Check if the adjacent square is not visited
             if not visited[next_square[0]][next_square[1]][0]:
                 # Add the adjacent square to the frontier and mark it as visited
+                number_of_nodes += 1
                 queue.append((next_square[0], next_square[1], is_start))
                 path[next_square[0]][next_square[1]] = instruction
                 visited[next_square[0]][next_square[1]] = (1, is_start)
@@ -48,8 +50,8 @@ def process_child_nodes(
                     grid[next_square[1]][next_square[0]].assign_push_inside_queue()
             # Check if the adjacent square is visited by the other robot (overlapping)
             elif visited[next_square[0]][next_square[1]][0] and visited[next_square[0]][next_square[1]][1] != is_start:
-                return ((row, col), (next_square[0], next_square[1]))
-    return -1
+                return (((row, col), (next_square[0], next_square[1])), number_of_nodes)
+    return (-1, number_of_nodes)
 
 
 # Bidirectional search strategy
@@ -64,10 +66,13 @@ def bidirection_search(
     if draw_package:
         draw, grid, wait, check_forbid_event = draw_package
 
+    # number of nodes
+    number_of_nodes = 1
+    
     # Check if the robot is already at the goal
     for goal_row, goal_col in maze.goals:
         if robot.row == goal_row and robot.col == goal_col:
-            return ("", 0)
+            return ("", 0, number_of_nodes)
 
     # Initialize the frontier, visited and path
     intersacting_point = -1
@@ -86,6 +91,7 @@ def bidirection_search(
     goals = sorted(maze.goals, key=lambda x: (x[0], x[1]))
     for goal in goals:
         visited[goal[0]][goal[1]] = (1, False)
+        number_of_nodes += 1
         queue.append((goal[0], goal[1], False))
         path[goal[0]][goal[1]] = "end"
 
@@ -93,7 +99,7 @@ def bidirection_search(
         # Current square and its direction (search forward or backward)
         row, col, is_start = queue.pop(0)
         if is_start:  # Search forward
-            intersacting_point = process_child_nodes(
+            intersacting_point, number_of_nodes = process_child_nodes(
                 row,  # row from start point
                 col,  # col from start point
                 is_start,  # is start point
@@ -102,10 +108,11 @@ def bidirection_search(
                 path,
                 maze,
                 instructions_start,  # search forward
+                number_of_nodes, # number of nodes
                 draw_package,
             )
         else:  # Search backward
-            intersacting_point = process_child_nodes(
+            intersacting_point, number_of_nodes = process_child_nodes(
                 row,  # row from end point
                 col,  # col from end point
                 is_start,  # is end point
@@ -114,6 +121,7 @@ def bidirection_search(
                 path,
                 maze,
                 instructions_end,  # search backward
+                number_of_nodes, # number of nodes
                 draw_package,
             )
 
@@ -130,7 +138,7 @@ def bidirection_search(
         if intersacting_point != -1:
             if is_start:
                 # Check if the intersacting point is coming from the start point
-                return print_path_bidirection(
+                ans = print_path_bidirection(
                     intersacting_point[0],  # start point
                     intersacting_point[1],  # end point
                     path,  # path
@@ -139,9 +147,10 @@ def bidirection_search(
                     instructions_start,  # instructions of start point
                     instructions_end,  # instructions of end point
                 )
+                return (ans[0], ans[1], number_of_nodes)
             else:
                 # Check if the intersacting point is coming from the end point
-                return print_path_bidirection(
+                ans = print_path_bidirection(
                     intersacting_point[1],  # end point
                     intersacting_point[0],  # start point
                     path,  # path
@@ -150,4 +159,5 @@ def bidirection_search(
                     instructions_start,  # instructions of start point
                     instructions_end,  # instructions of end point
                 )
-    return ("No solution found.", 0)
+                return (ans[0], ans[1], number_of_nodes)
+    return ("No solution found.", 0, number_of_nodes)
