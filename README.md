@@ -62,7 +62,6 @@ The algorithm terminates either when the mu value cannot be lowered anymore or w
 μ ≤ max(PQ_f.top(), PQ_b.top())
 
 ## Visualization
+![image](https://github.com/emyeucanha5/COS30019-Robot-Navigation/assets/57170354/e6b74cee-d4bf-4c01-b141-64de8dc0feb0)
 
-![image](https://github.com/emyeucanha5/COS30019-Robot-Navigation/assets/57170354/72be0915-339e-47db-848b-13657c3eb534)
-
-![image](https://github.com/emyeucanha5/COS30019-Robot-Navigation/assets/57170354/bfd9d1aa-2b08-4847-a535-d38ca3145813)
+![image](https://github.com/emyeucanha5/COS30019-Robot-Navigation/assets/57170354/9bbbd23f-f385-4d80-bfe3-e550411f9ad7)
