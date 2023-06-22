@@ -64,11 +64,11 @@ Please refer to the complete report for more detailed information on each algori
 
 ## Specific feature
 
-# Bidirectional Search
+### Bidirectional Search
 
 The Bidirectional Search algorithm starts by initializing a queue `S` and pushing the start node to the queue with a Boolean value of True to indicate that it belongs to the start tree. The algorithm also initializes the visited array for the start node with a tuple value of `(True, True)` to indicate that it has been visited by the start tree. Similarly, the algorithm pushes all goal nodes to the queue with a Boolean value of False to indicate that they belong to the goal tree and initializes their visited array with a tuple value of `(True, False)` to indicate that they have been visited by the goal tree. For each iteration, if an adjacent node has not been visited by the same tree, the algorithm pushes it to the queue with the same Boolean value as the current node and updates its visited array accordingly. If an adjacent node has been visited by the other tree, the algorithm returns the path by using the path information stored in the path array.
 
-# Bidirectional A-Star Search
+### Bidirectional A-Star Search
 
 This algorithm utilizes two priority queues, `S_F`, and `S_B` to keep track of the frontier nodes in the forward and backward searches, respectively. Additionally, it maintains two arrays, `explore_F` and `explore_B`, to store the nodes that have been explored by the forward and backward searches, respectively. The mu (μ) value is also set to infinity initially, which represents the shortest path found so far by the algorithm. During each iteration, the algorithm pops a node from both priority queues and explores its adjacent nodes. If the popped node called v from one direction of search has been explored by the other direction of search, the mu (μ) value is updated as the minimum of its current value and the sum of its cost in both directions of search.
 
