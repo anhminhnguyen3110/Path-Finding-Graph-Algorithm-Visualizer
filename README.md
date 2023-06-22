@@ -62,6 +62,22 @@ The report includes the pseudocode for implementing each of the six search algor
 
 Please refer to the complete report for more detailed information on each algorithm's implementation and the Robot Navigation application.
 
+## Specific feature
+
+# Bidirectional Search
+
+The Bidirectional Search algorithm starts by initializing a queue `S` and pushing the start node to the queue with a Boolean value of True to indicate that it belongs to the start tree. The algorithm also initializes the visited array for the start node with a tuple value of `(True, True)` to indicate that it has been visited by the start tree. Similarly, the algorithm pushes all goal nodes to the queue with a Boolean value of False to indicate that they belong to the goal tree and initializes their visited array with a tuple value of `(True, False)` to indicate that they have been visited by the goal tree. For each iteration, if an adjacent node has not been visited by the same tree, the algorithm pushes it to the queue with the same Boolean value as the current node and updates its visited array accordingly. If an adjacent node has been visited by the other tree, the algorithm returns the path by using the path information stored in the path array.
+
+# Bidirectional A-Star Search
+
+This algorithm utilizes two priority queues, `S_F`, and `S_B` to keep track of the frontier nodes in the forward and backward searches, respectively. Additionally, it maintains two arrays, `explore_F` and `explore_B`, to store the nodes that have been explored by the forward and backward searches, respectively. The mu (μ) value is also set to infinity initially, which represents the shortest path found so far by the algorithm. During each iteration, the algorithm pops a node from both priority queues and explores its adjacent nodes. If the popped node called v from one direction of search has been explored by the other direction of search, the mu (μ) value is updated as the minimum of its current value and the sum of its cost in both directions of search.
+
+μ = min(μ, cost_b(v) + cost_f(v))
+
+The algorithm terminates either when the mu value cannot be lowered anymore or when the maximum f_value of the nodes in both priority queues is smaller than or equal to the current mu value. The reason for using the maximum of the two smallest f(n) values is to ensure that only nodes that are near the intersection point of the two search trees are considered for finding the shortest path. It will terminate when:
+
+μ ≤ max(PQ_f.top(), PQ_b.top())
+
 ## Visualization
 
 ![image](https://github.com/emyeucanha5/COS30019-Robot-Navigation/assets/57170354/72be0915-339e-47db-848b-13657c3eb534)
