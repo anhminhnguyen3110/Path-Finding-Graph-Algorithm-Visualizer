@@ -25,23 +25,8 @@ There are two methods for accessing the Graphical User Interface (GUI) of the ap
 
 For a more detailed explanation of using the GUI, refer to the figures and descriptions provided in the document.
 
-# Introduction
-
-## Objective
-
-This report aims to provide a comprehensive overview of the Robot Navigation problem and the implementation of six search strategies. It also includes instructions on using the GUI.
-
-## Problem Introduction
-
-The Robot Navigation problem involves a grid with empty cells and wall cells. The robot's goal is to find a path from its initial location to the nearest goal with the smallest path cost. The robot can only move up, left, down, and right. The problem provides the initial coordinates of the robot and multiple goal coordinates. The search strategies implemented in this application aim to solve this problem.
-
-## Glossary
-
-The glossary provides definitions for key terms used in the report, such as graph, priority queue, heuristic function, tree, and frontier.
-
-## Search Algorithms
-
-The report describes six search algorithms implemented in the application:
+# Search Algorithm detail
+The readme describes six search algorithms implemented in the application:
 
 - Breadth First Search (BFS)
 - Depth First Search (DFS)
@@ -52,13 +37,11 @@ The report describes six search algorithms implemented in the application:
 
 For each algorithm, the report explains its mechanism, time and space complexity, and optimality. It also includes pseudocode for each algorithm's implementation.
 
-## Comparison
-
-The report provides a comparison between the six search algorithms based on the number of nodes and the time required for execution. The comparison is conducted using five test cases with different grid sizes.
-
 ## Implementation
 
 The report includes the pseudocode for implementing each of the six search algorithms: BFS, DFS, GBFS, A-Star, Bidirectional Search, and Bidirectional A-Star. It explains the key differences and optimizations for each algorithm.
+
+[103178955.pdf](https://github.com/emyeucanha5/COS30019-Robot-Navigation/files/11828448/103178955.pdf)
 
 Please refer to the complete report for more detailed information on each algorithm's implementation and the Robot Navigation application.
 
@@ -83,5 +66,3 @@ The algorithm terminates either when the mu value cannot be lowered anymore or w
 ![image](https://github.com/emyeucanha5/COS30019-Robot-Navigation/assets/57170354/72be0915-339e-47db-848b-13657c3eb534)
 
 ![image](https://github.com/emyeucanha5/COS30019-Robot-Navigation/assets/57170354/bfd9d1aa-2b08-4847-a535-d38ca3145813)
-
-**Note:** The figures mentioned in this Readme are not included. Please refer to the original document for the complete content.
