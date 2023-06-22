@@ -82,4 +82,6 @@ The algorithm terminates either when the mu value cannot be lowered anymore or w
 
 ![image](https://github.com/emyeucanha5/COS30019-Robot-Navigation/assets/57170354/72be0915-339e-47db-848b-13657c3eb534)
 
+![image](https://github.com/emyeucanha5/COS30019-Robot-Navigation/assets/57170354/bfd9d1aa-2b08-4847-a535-d38ca3145813)
+
 **Note:** The figures mentioned in this Readme are not included. Please refer to the original document for the complete content.
